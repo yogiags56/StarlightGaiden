@@ -26,9 +26,11 @@ def finalize_capture(folder:Path)->dict:
  files={}
  for rel in rels[:2]:
   if not isinstance(rel,str) or not rel:raise FinalizeError("state artifact path missing")
-  p=(folder/rel).resolve()
+  raw=folder/rel
+  if raw.is_symlink():raise FinalizeError(f"required state artifact is a symlink: {rel}")
+  p=raw.resolve()
   if folder not in p.parents:raise FinalizeError(f"path escapes capture folder: {rel}")
-  if not p.is_file() or p.is_symlink():raise FinalizeError(f"required state artifact missing or symlink: {rel}")
+  if not p.is_file():raise FinalizeError(f"required state artifact missing: {rel}")
   files[p.relative_to(folder).as_posix()]=p
  graphics=(folder/gd).resolve()
  if folder not in graphics.parents or not graphics.is_dir() or graphics.is_symlink():
