@@ -14,7 +14,7 @@ Status reflects work actually completed in this repository, not estimates.
 | RGM-001E.5 | Room Fingerprint Engine | Experimental candidate matcher; synthetic tests pass; not calibrated on real captures |
 | RGM-001E.6 | Real Capture Validation Harness | Implemented; synthetic integrity/pairwise tests pass; awaiting real captures |
 | RGM-001E.7 | Multi-Signal Scene Correlation | Implemented; synthetic parser/correlation tests pass; awaiting real captures |
-| RGM-001E.8 | Scene State Classification Foundation | Implemented; synthetic evidence and unknown-fallback tests pass; awaiting real captures |
+| RGM-001E.8 | Scene State Classification Foundation | Implemented; synthetic evidence and unknown-fallback tests pass; awaiting real captures |\n| RGM-001E.9 | Controlled Gameplay Capture Experiments | Protocol, 11-experiment matrix and blank-plan generator implemented; awaiting actual game captures |
 | RGM-002 | Upstream build and compatibility | Not started |
 | RGM-003 | Gameplay verification | Not started |
 | RGM-004 | Asset pipeline | Not started |
@@ -25,6 +25,14 @@ Status reflects work actually completed in this repository, not estimates.
 | RGM-009 | Regression and release | Not started |
 
 ## Immediate sequence
+
+1. Generate a session plan with `python tools/rgm_experiment_plan.py --output dataset/SESSION-0001 --session-id SESSION-0001`.
+2. Execute reachable experiments in `docs/analysis/RGM-001E.9-EXPERIMENT-MATRIX.json` and capture paired state/graphics dumps.
+3. Validate captures and preserve originals/checksums.
+4. Evaluate same-room positive controls and visually similar different-room negative controls.
+5. Calibrate thresholds only after sufficient labeled captures exist.
+
+## Earlier analysis sequence
 
 1. Capture paired memory and graphics snapshots from the same game state.
 2. Run the dataset integrity validator and repair missing metadata/checksums.
