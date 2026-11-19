@@ -33,7 +33,7 @@ def generate(matrix_path:Path,out:Path,session_id:str):
                 cid=f'{exp["id"]}-CP-{index:02d}-R{repeat:02d}'
                 planned["capture_checkpoints"].append({"capture_id":cid,"checkpoint":checkpoint,"repeat":repeat,"status":"not_captured",
                   "required_files":["state_dump .bin",".txt summary","asset_dump graphics directory","capture_metadata.json"]})
-                capture_dir=out/cid;capture_dir.mkdir()
+                capture_dir=out/f"FP-{cid}";capture_dir.mkdir()
                 (capture_dir/"graphics").mkdir()
                 (capture_dir/"capture_metadata.json").write_text(json.dumps({"schema_version":1,"session_id":session_id,
                   "capture_id":cid,"experiment_id":exp["id"],"checkpoint":checkpoint,"repeat":repeat,
