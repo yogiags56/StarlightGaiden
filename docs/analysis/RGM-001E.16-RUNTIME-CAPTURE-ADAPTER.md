@@ -66,7 +66,7 @@ python tools/rgm_ingestion_review.py dataset/SESSION-0001 --output dataset/SESSI
 python tools/rgm_temporal_consistency.py dataset/SESSION-0001 --output dataset/SESSION-0001/temporal_review.json
 ```
 
-The finalizer hashes the state binary, state summary, and every file in the graphics directory. The Python CI now also runs this production finalizer against the synthetic bundle emitted by the C++ adapter smoke executable, testing the C++-to-Python handoff. It refuses missing required graphics, path traversal and symlink artifacts. It updates only the metadata checksum map; the raw dump files remain unchanged.
+The finalizer hashes the state binary, state summary, and every file in the graphics directory. The Python CI now also runs this production finalizer against the synthetic bundle emitted by the C++ adapter smoke executable, testing the C++-to-Python handoff. The desktop workflow is being extended to publish the verified Linux x86_64 executable with build provenance and SHA-256 for a user-side interactive test. It refuses missing required graphics, path traversal and symlink artifacts. It updates only the metadata checksum map; the raw dump files remain unchanged.
 
 ## Known limitations / next gates
 - The guarded script patches a clean local checkout; the GitHub CI build applies this patch to an ephemeral upstream checkout. No patch is merged into the upstream repository.
