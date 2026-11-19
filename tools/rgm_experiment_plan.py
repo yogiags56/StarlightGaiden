@@ -27,16 +27,19 @@ def generate(matrix_path:Path,out:Path,session_id:str):
         e_dir=out/exp["id"];e_dir.mkdir()
         planned={"experiment_id":exp["id"],"name":exp["name"],"target":exp["target"],"question":exp["question"],
           "sequence":exp["sequence"],"capture_checkpoints":[]}
+        repeats=int(matrix["protocol"].get("repeat_count",1))
+        if repeats < 1 or repeats > 20: raise ValueError("protocol.repeat_count must be between 1 and 20")
         for index,checkpoint in enumerate(exp["captures"],1):
-            cid=f'{exp["id"]}-CP-{index:02d}'
-            planned["capture_checkpoints"].append({"capture_id":cid,"checkpoint":checkpoint,"status":"not_captured",
-              "required_files":["state_dump .bin",".txt summary","asset_dump graphics directory","capture_metadata.json"]})
-            (e_dir/f"{cid}.json").write_text(json.dumps({"schema_version":1,"session_id":session_id,
-              "capture_id":cid,"experiment_id":exp["id"],"checkpoint":checkpoint,
-              "observed":{"location_label":"unknown","activity":"unknown","character":"unknown","speaker":"unknown"},
-              "capture":{"state_file":"state.bin","state_summary":"state.txt","graphics_directory":"graphics"},
-              "verification":{"room_identity":"unverified","scene_identity":"unverified","active_character":"unverified","speaker":"unverified"},
-              "source_sha256":{}},indent=2)+"\n",encoding="utf-8")
+            for repeat in range(1,repeats+1):
+                cid=f'{exp["id"]}-CP-{index:02d}-R{repeat:02d}'
+                planned["capture_checkpoints"].append({"capture_id":cid,"checkpoint":checkpoint,"repeat":repeat,"status":"not_captured",
+                  "required_files":["state_dump .bin",".txt summary","asset_dump graphics directory","capture_metadata.json"]})
+                (e_dir/f"{cid}.json").write_text(json.dumps({"schema_version":1,"session_id":session_id,
+                  "capture_id":cid,"experiment_id":exp["id"],"checkpoint":checkpoint,"repeat":repeat,
+                  "observed":{"location_label":"unknown","activity":"unknown","character":"unknown","speaker":"unknown"},
+                  "capture":{"state_file":"state.bin","state_summary":"state.txt","graphics_directory":"graphics"},
+                  "verification":{"room_identity":"unverified","scene_identity":"unverified","active_character":"unverified","speaker":"unverified"},
+                  "source_sha256":{}},indent=2)+"\\n",encoding="utf-8")
         session["experiments"].append(planned)
     (out/"session_plan.json").write_text(json.dumps(session,indent=2)+"\n",encoding="utf-8")
     return {"session_directory":str(out),"experiments":len(session["experiments"]),
