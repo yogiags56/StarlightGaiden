@@ -131,7 +131,7 @@ From the StarlightGaiden repository root, apply the guarded integration to the a
 
 ```bash
 python integration/regaiden-recomp/apply_rgm_adapter.py ../regaiden-recomp
-cmake -S ../regaiden-recomp -B ../regaiden-recomp/build -DCMAKE_BUILD_TYPE=Release
+cmake -S ../regaiden-recomp/src/recompiled -B ../regaiden-recomp/build -DCMAKE_BUILD_TYPE=Release
 cmake --build ../regaiden-recomp/build --config Release --parallel
 ```
 
