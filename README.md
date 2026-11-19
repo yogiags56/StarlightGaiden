@@ -16,7 +16,7 @@ The current technical candidate is [sergiomanzur/regaiden-recomp](https://github
 
 ## Development status
 
-Current work: **RGM-001E.6 — Real Capture Validation Harness**.
+Current work: **RGM-001E.7 — Multi-Signal Scene Correlation**.
 
 The offline Snapshot Analyzer compares WRAM, HRAM, IO and OAM snapshot blocks. The Graphics Comparator compares upstream RGBA framebuffer, tile sheets and 32×32 tilemap cells. The experimental Room Fingerprint Engine hashes rendered tile patterns and tests circular tilemap offsets to report candidate similarity. Synthetic tests are not game-runtime validation; no real game snapshot dataset or Android build is claimed.
 
