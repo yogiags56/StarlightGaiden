@@ -24,7 +24,7 @@ Status reflects work actually completed in this repository, not estimates.
 | RGM-001E.15 | Capture Synchronization & Temporal Consistency | Timing/frame evidence auditor and synthetic tests implemented; runtime instrumentation and real paired captures pending |
 | RGM-001E.15 | Capture Synchronization & Temporal Consistency | Timing/frame evidence auditor and synthetic tests implemented; runtime instrumentation and real paired captures still pending |
 | RGM-001E.16 | Runtime Capture Bundle Adapter | C++ adapter, checksum finalizer and integration instructions staged |
-| RGM-001E.17 | Guarded Upstream Integration & Build Verification | Exact-commit integration script and one-shot CLI capture hook staged; desktop/Android build and runtime validation pending |
+| RGM-001E.17 | Guarded Upstream Integration & Build Verification | Exact-commit integration script, opt-in CLI hook, transactional anchor checks and fixture tests implemented; full upstream build pending |\n| RGM-001E.18 | Desktop Adapter Smoke Verification | 56 Python tests and C++20 adapter smoke harness pass in CI; full upstream desktop build and gameplay capture pending |
 | RGM-002 | Upstream build and compatibility | Not started |
 | RGM-003 | Gameplay verification | Not started |
 | RGM-004 | Asset pipeline | Not started |
@@ -36,19 +36,13 @@ Status reflects work actually completed in this repository, not estimates.
 
 ## Immediate sequence
 
-1. Generate a session plan with `python tools/rgm_experiment_plan.py --output dataset/SESSION-0001 --session-id SESSION-0001`.
-2. Record collection progress with `python tools/rgm_collection_status.py dataset/SESSION-0001 --output collection_status.json`.
-3. Run strict plan/provenance review with `python tools/rgm_ingestion_review.py dataset/SESSION-0001 --output ingestion_review.json`.
-4. Assess dump timing/frame evidence with `python tools/rgm_temporal_consistency.py dataset/SESSION-0001 --output temporal_review.json`.
-5. When the upstream adapter is integrated and built, capture paired dumps on the emulation thread after frame completion; finalize with `python tools/rgm_capture_finalize.py dataset/SESSION-0001/FP-<capture-id>`.
-4. Assess dump timing/frame evidence with `python tools/rgm_temporal_consistency.py dataset/SESSION-0001 --output temporal_review.json`.
-2. Populate generated FP capture folders with actual paired dumps; run the capture validator.
-3. Execute reachable experiments in `docs/analysis/RGM-001E.9-EXPERIMENT-MATRIX.json` and capture paired state/graphics dumps.
-4. Validate captures and preserve originals/checksums.
-5. Evaluate same-room positive controls and visually similar different-room negative controls.
-6. Run dataset audit and preserve its split manifest with the dataset version.
-7. Add human-reviewed room annotations with evidence notes.
-8. Calibrate on the calibration split and evaluate once on the independent holdout split; do not tune against evaluation results.
+1. Clone `sergiomanzur/regaiden-recomp` at audited commit `e5befd20e67939d939319149d1c1177b8e6c5cd6`.
+2. Apply `python integration/regaiden-recomp/apply_rgm_adapter.py ../regaiden-recomp` from the StarlightGaiden repository root.
+3. Configure and build the complete upstream desktop target with CMake.
+4. Run without RGM options and verify ordinary gameplay remains unchanged.
+5. Run one opt-in capture with a legally obtained local ROM and operator-confirmed labels.
+6. Finalize SHA-256 values and run capture ingestion/temporal reviewers.
+7. Proceed to Android ARM64 only after desktop build and capture gates pass.
 
 ## Earlier analysis sequence
 
