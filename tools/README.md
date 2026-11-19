@@ -56,3 +56,7 @@ See [RGM-001E.9-CONTROLLED-EXPERIMENTS.md](../docs/analysis/RGM-001E.9-CONTROLLE
 python tools/rgm_experiment_plan.py --output dataset/SESSION-0001 --session-id SESSION-0001
 ```
 The generator creates empty metadata templates only. It does not capture or invent game data.
+
+## RGM-001E.10 Real Gameplay Capture Ingestion
+
+See [real capture ingestion specification](../docs/analysis/RGM-001E.10-REAL-CAPTURE-INGESTION.md). The generator writes `FP-<capture_id>` folders that are discovered by the validator. The validator rejects missing real snapshots/graphics, mismatched session/capture IDs, unsafe paths and checksum mismatches.
