@@ -97,3 +97,12 @@ See [Ingestion Quality Review](../docs/analysis/RGM-001E.14-INGESTION-QUALITY-RE
 python tools/rgm_ingestion_review.py dataset/SESSION-0001 --output dataset/SESSION-0001/ingestion_review.json
 ```
 Checks each planned capture against session/experiment/checkpoint/repeat identity, the strict paired capture validator, full SHA-256 coverage and unexpected capture folders. It is read-only and does not verify ground-truth room identity.
+
+## RGM-001E.15 Temporal Consistency
+
+See [Temporal Consistency Protocol](../docs/analysis/RGM-001E.15-TEMPORAL-CONSISTENCY.md).
+
+```bash
+python tools/rgm_temporal_consistency.py dataset/SESSION-0001 --max-gap-ms 250 --output dataset/SESSION-0001/temporal_review.json
+```
+Requires optional monotonic timing metadata and, for a full pass, matching trusted game-frame markers. Timestamp proximity alone is not treated as proof of same-state capture.
