@@ -36,6 +36,12 @@ def inspect_capture(directory: Path) -> dict[str,Any]:
     if m.get("schema_version")!=1: errors.append("schema_version must be 1")
     for k in ("capture_id","session_id"):
         if not isinstance(m.get(k),str) or not m[k]: errors.append(f"{k} missing")
+    if directory.name.startswith("FP-") and isinstance(m.get("capture_id"),str):
+        if directory.name != "FP-"+m["capture_id"]: errors.append("capture_id does not match FP directory name")
+    if directory.parent.name.startswith("SESSION-") and m.get("session_id") != directory.parent.name:
+        errors.append("session_id does not match parent session directory")
+    if isinstance(m.get("capture_id"),str) and not m["capture_id"].startswith("EXP-"):
+        errors.append("capture_id must preserve experiment identifier")
     observed=m.get("observed") if isinstance(m.get("observed"),dict) else {}
     for k in ("location_label","activity"):
         if not isinstance(observed.get(k),str) or not observed[k]: errors.append(f"observed.{k} missing")
@@ -48,7 +54,14 @@ def inspect_capture(directory: Path) -> dict[str,Any]:
     if "state_file" in paths:
         try: state=parse_snapshot(paths["state_file"])
         except (OSError,SnapshotError) as e: errors.append(f"invalid state snapshot: {e}")
-    if "state_summary" in paths and not paths["state_summary"].is_file(): warnings.append("state summary missing")
+    if "state_summary" in paths:
+        if not paths["state_summary"].is_file(): errors.append("state summary missing")
+        else:
+            try:
+                summary=paths["state_summary"].read_text(encoding="utf-8",errors="replace")
+                if not summary.strip(): errors.append("state summary is empty")
+                elif "ROM_BANK" not in summary and "rom_bank" not in summary: warnings.append("state summary has no ROM bank field")
+            except OSError as e: errors.append(f"cannot read state summary: {e}")
     graphics=paths.get("graphics_directory")
     if graphics and not graphics.is_dir(): errors.append("graphics directory missing")
     elif graphics and graphics.is_dir():
@@ -59,7 +72,13 @@ def inspect_capture(directory: Path) -> dict[str,Any]:
                 im=decode_rgba(p)
                 if (im["width"],im["height"])!=expected: errors.append(f"{name}: expected {expected[0]}x{expected[1]}")
             except (OSError,ImageError) as e: errors.append(f"{name}: {e}")
-        if not (graphics/"manifest.txt").is_file(): errors.append("graphics file missing: manifest.txt")
+        manifest=graphics/"manifest.txt"
+        if not manifest.is_file(): errors.append("graphics file missing: manifest.txt")
+        else:
+            try:
+                manifest_text=manifest.read_text(encoding="utf-8",errors="replace")
+                if not manifest_text.strip(): errors.append("graphics manifest is empty")
+            except OSError as e: errors.append(f"cannot read graphics manifest: {e}")
     checks=m.get("source_sha256")
     if not isinstance(checks,dict) or not checks: warnings.append("source_sha256 absent; integrity not fully recorded")
     else:
@@ -70,6 +89,7 @@ def inspect_capture(directory: Path) -> dict[str,Any]:
                 elif not isinstance(digest,str) or sha256_file(p).lower()!=digest.lower(): errors.append(f"SHA-256 mismatch: {rel}")
             except (OSError,CaptureValidationError) as e: errors.append(str(e))
     return {"capture_directory":str(directory),"capture_id":m.get("capture_id"),"session_id":m.get("session_id"),
+            "experiment_id":m.get("experiment_id"),"checkpoint":m.get("checkpoint"),"repeat":m.get("repeat"),
             "status":"invalid" if errors else "valid","observed":observed,"errors":errors,"warnings":warnings,
             "state_sha256":state["sha256"] if state else None,"graphics_directory":str(graphics) if graphics else None}
 
