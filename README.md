@@ -16,7 +16,7 @@ The current technical candidate is [sergiomanzur/regaiden-recomp](https://github
 
 ## Development status
 
-Current work: **RGM-001E.21 — Android ARM64 APK built and package-verified in CI; physical-device validation pending**
+Current work: **RGM-001E.22 — Physical Android smoke test passed for launch, ROM playback and touch controls; real capture validation pending**
 
 The offline Snapshot Analyzer compares WRAM, HRAM, IO and OAM snapshot blocks. The conservative Scene State Classifier reports UI-family and dialogue-geometry candidates, while leaving unvalidated scene types and character/speaker identity unresolved. The Graphics Comparator compares upstream RGBA framebuffer, tile sheets and 32×32 tilemap cells. The experimental Room Fingerprint Engine hashes rendered tile patterns and tests circular tilemap offsets to report candidate similarity. Synthetic tests are not game-runtime validation; no real game snapshot dataset or physical-device runtime validation is claimed.
 
