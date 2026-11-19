@@ -171,7 +171,7 @@ def main() -> int:
         platform_header_text,
         "bool gb_platform_poll_events(GBContext* ctx);\n",
         "bool gb_platform_poll_events(GBContext* ctx);\n"
-        "/* Consume one operator F8 request after a completed guest frame. */\n"
+        "/* Consume one touch-menu capture request after a completed guest frame. */\n"
         "bool gb_platform_consume_rgm_capture_request(void); // " + MARKER + "\n",
         "SDL platform header API")
     platform_cpp_text = replace_once(
