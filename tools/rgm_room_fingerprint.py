@@ -105,15 +105,22 @@ def compare_fingerprints(a: dict[str, Any], b: dict[str, Any],
     if best is None:
         return {"status": "insufficient_evidence", "reason": "no comparable static cells"}
     enough = best["overlap_cells"] >= min_overlap
+    unique_patterns = len(set(va for va, _ in pairs)) if pairs else 0
+    diverse = unique_patterns >= 4
     # These are provisional engineering gates, not empirically calibrated thresholds.
-    status = "candidate_match" if enough and best["weighted_similarity"] >= 0.82 else (
-        "weak_candidate" if enough and best["weighted_similarity"] >= 0.60 else "insufficient_evidence")
+    status = "candidate_match" if enough and diverse and best["weighted_similarity"] >= 0.82 else (
+        "weak_candidate" if enough and diverse and best["weighted_similarity"] >= 0.60 else "insufficient_evidence")
     return {
         "status": status,
         "best_alignment": best,
         "minimum_overlap_required": min_overlap,
         "overlap_sufficient": enough,
+        "unique_patterns_in_overlap": unique_patterns,
+        "minimum_unique_patterns_required": 4,
+        "pattern_diversity_sufficient": diverse,
+        "reason": None if diverse else "too few distinct tile patterns; repetitive maps are ambiguous",
         "thresholds": {"candidate_match": 0.82, "weak_candidate": 0.60,
+                       "minimum_unique_patterns": 4,
                        "calibration": "provisional; requires real-game captures"},
         "interpretation": "Candidate similarity only. Never treat this as a verified room ID.",
         "comparison": {"source_a": a["source"], "source_b": b["source"],
