@@ -178,8 +178,8 @@ def main() -> None:
         "            mPendingRgmZip = null;\n"
         "        } else if (requestCode == REQUEST_CODE_PICK_ROM) {", "SAF result handler")
 
-    h = once(h, "bool gb_platform_consume_rgm_capture_request(void);\n",
-        "bool gb_platform_consume_rgm_capture_request(void);\n"
+    h = once(h, "bool gb_platform_consume_rgm_capture_request(void); // RGM_CAPTURE_BUNDLE_INTEGRATION\n",
+        "bool gb_platform_consume_rgm_capture_request(void); // RGM_CAPTURE_BUNDLE_INTEGRATION\n"
         "/* Export a completed capture to user-visible Android Downloads. */\n"
         "void gb_platform_export_rgm_bundle(const char* capture_dir); // " + MARKER + "\n",
         "platform export declaration")
