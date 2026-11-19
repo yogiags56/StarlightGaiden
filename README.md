@@ -16,12 +16,13 @@ The current technical candidate is [sergiomanzur/regaiden-recomp](https://github
 
 ## Development status
 
-Current work: **RGM-001E.20 — Android ARM64 integration, touch-menu capture, Python fixtures passing; Android APK CI pending**
+Current work: **RGM-001E.21 — Android ARM64 APK built and package-verified in CI; physical-device validation pending**
 
-The offline Snapshot Analyzer compares WRAM, HRAM, IO and OAM snapshot blocks. The conservative Scene State Classifier reports UI-family and dialogue-geometry candidates, while leaving unvalidated scene types and character/speaker identity unresolved. The Graphics Comparator compares upstream RGBA framebuffer, tile sheets and 32×32 tilemap cells. The experimental Room Fingerprint Engine hashes rendered tile patterns and tests circular tilemap offsets to report candidate similarity. Synthetic tests are not game-runtime validation; no real game snapshot dataset or Android build is claimed.
+The offline Snapshot Analyzer compares WRAM, HRAM, IO and OAM snapshot blocks. The conservative Scene State Classifier reports UI-family and dialogue-geometry candidates, while leaving unvalidated scene types and character/speaker identity unresolved. The Graphics Comparator compares upstream RGBA framebuffer, tile sheets and 32×32 tilemap cells. The experimental Room Fingerprint Engine hashes rendered tile patterns and tests circular tilemap offsets to report candidate similarity. Synthetic tests are not game-runtime validation; no real game snapshot dataset or physical-device runtime validation is claimed.
 
 See:
 - [Roadmap](docs/ROADMAP.md)
+- [Android ARM64 CI build report](docs/analysis/RGM-001E.21-ANDROID-ARM64-CI.md)
 - [Architecture and provenance](docs/ARCHITECTURE.md)
 - [RGM-001E dataset and fingerprint protocol](docs/analysis/RGM-001E-SNAPSHOT-PROTOCOL.md)
 - [Room Fingerprint Engine](tools/ROOM-FINGERPRINT.md)
