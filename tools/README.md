@@ -78,3 +78,13 @@ See [Verified Ground-Truth Evaluation](../docs/analysis/RGM-001E.12-GROUND-TRUTH
 python tools/rgm_ground_truth_evaluator.py dataset_split_manifest.json verified_room_annotations.json scene_correlation.json --output ground_truth_evaluation.json
 ```
 Only annotations with `verified=true`, reviewer and evidence are accepted. The threshold is calibrated on calibration pairs and applied to holdout evaluation pairs; cross-split pairs and unverified annotations are excluded.
+
+## RGM-001E.13 Real Gameplay Collection
+
+See [Real Gameplay Dataset Collection](../docs/analysis/RGM-001E.13-REAL-GAMEPLAY-COLLECTION.md).
+
+```bash
+python tools/rgm_experiment_plan.py --matrix docs/analysis/RGM-001E.9-EXPERIMENT-MATRIX.json --output dataset/SESSION-0001 --session-id SESSION-0001
+python tools/rgm_collection_status.py dataset/SESSION-0001 --output dataset/SESSION-0001/collection_status.json
+```
+The plan generator creates blank metadata templates only. The status auditor reports planned/captured/validated/invalid states and requires recorded artifact checksums before calling a capture validated. It does not infer ground-truth room identity.
