@@ -13,7 +13,7 @@ Status reflects work actually completed in this repository, not estimates.
 | RGM-001E.4 | Graphics and tilemap comparator | Implemented; synthetic tests pass |
 | RGM-001E.5 | Room Fingerprint Engine | Experimental candidate matcher; synthetic tests pass; not calibrated on real captures |
 | RGM-001E.6 | Real Capture Validation Harness | Implemented; synthetic integrity/pairwise tests pass; awaiting real captures |
-| RGM-001E.7 | Multi-Signal Scene Correlation | Implemented; synthetic parser/correlation tests pending CI; awaiting real captures |\n| RGM-002 | Upstream build and compatibility | Not started |
+| RGM-001E.7 | Multi-Signal Scene Correlation | Implemented; synthetic parser/correlation tests pass; awaiting real captures |\n| RGM-002 | Upstream build and compatibility | Not started |
 | RGM-003 | Gameplay verification | Not started |
 | RGM-004 | Asset pipeline | Not started |
 | RGM-005 | Exploration presentation | Not started |
