@@ -46,6 +46,11 @@ def _timing(meta:dict,max_gap_ms:float):
         if not frame_match:errors.append("game frame markers differ between state and graphics dumps")
     else:
         warnings.append("frame-counter evidence missing; timestamp proximity cannot prove identical game state")
+    for key in ("state_frame_stable","graphics_frame_stable","same_completed_frame"):
+        if t.get(key) is False:
+            errors.append(f"{key} explicitly reports an unstable or mismatched frame")
+    if t.get("same_completed_frame") is True and frame_match is False:
+        errors.append("same_completed_frame conflicts with numeric frame markers")
     utc_state=t.get("state_dump_utc");utc_graphics=t.get("graphics_dump_utc")
     if bool(utc_state)!=bool(utc_graphics):warnings.append("only one UTC timestamp supplied")
     status="invalid" if errors else ("time_window_pass" if gap is not None and gap<=max_gap_ms and frame_match is True else "review_required")
