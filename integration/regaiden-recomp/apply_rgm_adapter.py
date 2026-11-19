@@ -75,6 +75,11 @@ def main() -> int:
         "main include")
     main_text = replace_once(
         main_text,
+        '#include <string.h>\n',
+        '#include <string.h>\n#include <time.h>\n',
+        "Android capture timestamp include")
+    main_text = replace_once(
+        main_text,
         '    const char* state_dump_file = NULL;\n',
         '    const char* state_dump_file = NULL;\n'
         '    const char* rgm_capture_dir = NULL;\n'
@@ -88,7 +93,8 @@ def main() -> int:
         '    const char* rgm_speaker = NULL;\n'
         '    unsigned rgm_repeat = 1;\n'
         '    bool rgm_capture_pending = false;\n'
-        '    bool rgm_android_auto_capture_path = false;\n',
+        '    bool rgm_android_auto_capture_path = false;\n'
+        '    char rgm_android_session_id[64] = {};\n',
         "RGM CLI variables")
     main_text = replace_once(
         main_text,
@@ -122,7 +128,8 @@ def main() -> int:
         '    if (!rom_loader_acquire_rom(explicit_rom_path)) {\n',
         '#ifdef __ANDROID__\n'
         '    if (!rgm_capture_dir) {\n'
-        '        rgm_session = "SESSION-ANDROID-0001";\n'
+        '        snprintf(rgm_android_session_id, sizeof(rgm_android_session_id), "SESSION-ANDROID-%lld", (long long)time(NULL));\n'
+        '        rgm_session = rgm_android_session_id;\n'
         '        rgm_experiment = "ANDROID-TOUCH-001";\n'
         '        rgm_checkpoint = "UNLABELED";\n'
         '        rgm_location = "unlabeled";\n'
@@ -150,7 +157,7 @@ def main() -> int:
         '                const char* rgm_external = SDL_AndroidGetExternalStoragePath();\n'
         '                if (!rgm_capture_dir && rgm_external && rgm_external[0]) {\n'
         '                    ++rgm_android_capture_serial;\n'
-        '                    snprintf(rgm_android_capture_id, sizeof(rgm_android_capture_id), "ANDROID-%06u", rgm_android_capture_serial);\n'
+        '                    snprintf(rgm_android_capture_id, sizeof(rgm_android_capture_id), "ANDROID-%lld-%06u", (long long)time(NULL), rgm_android_capture_serial);\n'
         '                    snprintf(rgm_android_capture_dir, sizeof(rgm_android_capture_dir), "%s/snapshots/rgm/%s/FP-%s", rgm_external, rgm_session, rgm_android_capture_id);\n'
         '                    rgm_capture_id = rgm_android_capture_id;\n'
         '                    rgm_capture_dir = rgm_android_capture_dir;\n'
