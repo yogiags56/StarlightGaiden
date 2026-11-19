@@ -1,0 +1,219 @@
+{
+  "schema_version": 1,
+  "milestone": "RGM-001E.9",
+  "project": "Resident Evil Gaiden Remastered",
+  "upstream": {
+    "repository": "sergiomanzur/regaiden-recomp",
+    "commit": "e5befd20e67939d939319149d1c1177b8e6c5cd6"
+  },
+  "protocol": {
+    "capture_pairing": "Capture state_dump and asset_dump as close together as possible without changing game state.",
+    "repeat_count": 3,
+    "controls": [
+      "same-state repeat",
+      "same-room changed-state",
+      "different-room negative control"
+    ],
+    "record_observed_labels_only": true
+  },
+  "experiments": [
+    {
+      "id": "EXP-01",
+      "name": "Exploration baseline",
+      "target": "exploration",
+      "sequence": [
+        "Barry stationary in a known corridor",
+        "Capture baseline",
+        "Walk within the same room and capture",
+        "Return to the same tile/camera position and capture"
+      ],
+      "captures": [
+        "stationary_A",
+        "movement",
+        "stationary_B"
+      ],
+      "question": "Which signals vary during movement while room geometry remains stable?"
+    },
+    {
+      "id": "EXP-02",
+      "name": "Inventory and item detail",
+      "target": "inventory_pda",
+      "sequence": [
+        "Capture exploration baseline",
+        "Open inventory",
+        "Open item detail",
+        "Close inventory and capture"
+      ],
+      "captures": [
+        "before",
+        "inventory",
+        "item_detail",
+        "after"
+      ],
+      "question": "Does WRAM bank 2 consistently identify the UI family and what distinguishes inventory from item detail?"
+    },
+    {
+      "id": "EXP-03",
+      "name": "PDA and menu screens",
+      "target": "inventory_pda",
+      "sequence": [
+        "Capture exploration baseline",
+        "Open PDA",
+        "Visit each PDA page",
+        "Open title/save menu separately if reachable"
+      ],
+      "captures": [
+        "before",
+        "pda_main",
+        "pda_pages",
+        "save_menu"
+      ],
+      "question": "Can PDA pages be distinguished from other UI states?"
+    },
+    {
+      "id": "EXP-04",
+      "name": "Dialogue",
+      "target": "dialogue",
+      "sequence": [
+        "Capture before interacting",
+        "Start NPC dialogue",
+        "Capture each speaker/portrait change",
+        "Advance dialogue",
+        "Exit dialogue and capture"
+      ],
+      "captures": [
+        "before",
+        "dialogue_start",
+        "speaker_changes",
+        "dialogue_end",
+        "after"
+      ],
+      "question": "Is dialogue geometry stable, and can text/speaker identity be proven from independent evidence?"
+    },
+    {
+      "id": "EXP-05",
+      "name": "Normal combat",
+      "target": "normal_combat",
+      "sequence": [
+        "Capture exploration baseline",
+        "Trigger ordinary enemy encounter",
+        "Capture battle entry, several battle turns and exit"
+      ],
+      "captures": [
+        "before",
+        "battle_entry",
+        "battle_turns",
+        "battle_exit"
+      ],
+      "question": "Which verified registers/state transitions distinguish combat from exploration and UI?"
+    },
+    {
+      "id": "EXP-06",
+      "name": "Boss combat",
+      "target": "boss_combat",
+      "sequence": [
+        "Capture immediately before boss encounter",
+        "Capture boss battle entry",
+        "Capture multiple turns and boss phases",
+        "Capture battle end"
+      ],
+      "captures": [
+        "before",
+        "boss_entry",
+        "boss_phases",
+        "boss_end"
+      ],
+      "question": "Can boss encounters be separated from normal combat using repeatable evidence?"
+    },
+    {
+      "id": "EXP-07",
+      "name": "Room transition",
+      "target": "room_transition",
+      "sequence": [
+        "Capture before doorway",
+        "Trigger doorway/room transition",
+        "Capture first stable frame in destination",
+        "Capture after camera settles"
+      ],
+      "captures": [
+        "before",
+        "transition",
+        "destination_entry",
+        "destination_stable"
+      ],
+      "question": "Which signals change at the transition boundary versus ordinary camera scrolling?"
+    },
+    {
+      "id": "EXP-08",
+      "name": "Cutscene",
+      "target": "cutscene",
+      "sequence": [
+        "Capture immediately before cutscene",
+        "Capture multiple points during cutscene",
+        "Capture after control returns"
+      ],
+      "captures": [
+        "before",
+        "cutscene_start",
+        "cutscene_mid",
+        "cutscene_end",
+        "after"
+      ],
+      "question": "Can cutscene be distinguished from exploration, especially intro paths using WRAM bank 1?"
+    },
+    {
+      "id": "EXP-09",
+      "name": "Save and load",
+      "target": "save_load",
+      "sequence": [
+        "Capture before save",
+        "Open save interface",
+        "Save and capture confirmation",
+        "Reload save",
+        "Capture restored state"
+      ],
+      "captures": [
+        "before",
+        "save_menu",
+        "save_confirm",
+        "load_restore"
+      ],
+      "question": "Which state changes identify save/load without conflating them with generic UI?"
+    },
+    {
+      "id": "EXP-10",
+      "name": "Character identity controls",
+      "target": "character_identity",
+      "sequence": [
+        "Capture controlled Barry state",
+        "Repeat equivalent state as Leon if available",
+        "Repeat equivalent state as Lucia if available",
+        "Capture dialogue with known speaker separately"
+      ],
+      "captures": [
+        "barry_control",
+        "leon_control",
+        "lucia_control",
+        "known_speaker"
+      ],
+      "question": "Which independent signals identify active character versus dialogue speaker? HP addresses alone are not accepted as proof."
+    },
+    {
+      "id": "EXP-11",
+      "name": "Look-alike room negative controls",
+      "target": "room_identity_negative_control",
+      "sequence": [
+        "Capture at least two visually similar but distinct rooms",
+        "Capture same room at different camera offsets",
+        "Capture revisit after leaving and returning"
+      ],
+      "captures": [
+        "room_A",
+        "room_B_lookalike",
+        "room_A_scroll",
+        "room_A_revisit"
+      ],
+      "question": "Can room fingerprinting reject false matches caused by repeated wall/corridor tiles?"
+    }
+  ]
+}
