@@ -24,3 +24,12 @@
 - Added project direction, roadmap, architecture/provenance and snapshot protocol.
 - Integrated the offline snapshot analyzer prototype.
 - Added synthetic unit tests; real game data and Android runtime validation remain pending.
+
+## Unreleased — RGM-001E.6 Capture Validation Harness
+
+- Added paired state/graphics capture metadata and file-integrity validator.
+- Added path traversal protection for metadata file references.
+- Added snapshot structure, PNG dimension and required-file checks.
+- Added pairwise fingerprint trials grouped by tester-entered location labels.
+- Added synthetic tests for valid captures, checksum mismatch and path traversal.
+- Real-game captures and ground-truth validation remain pending.
