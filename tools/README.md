@@ -60,3 +60,12 @@ The generator creates empty metadata templates only. It does not capture or inve
 ## RGM-001E.10 Real Gameplay Capture Ingestion
 
 See [real capture ingestion specification](../docs/analysis/RGM-001E.10-REAL-CAPTURE-INGESTION.md). The generator writes `FP-<capture_id>` folders that are discovered by the validator. The validator rejects missing real snapshots/graphics, mismatched session/capture IDs, unsafe paths and checksum mismatches.
+
+## RGM-001E.11 Dataset Audit
+
+See [Dataset Audit & Ground-Truth Evaluation](../docs/analysis/RGM-001E.11-DATASET-AUDIT.md).
+
+```bash
+python tools/rgm_dataset_audit.py dataset/ --seed 20261119 --output dataset_audit.json --split-manifest dataset_split_manifest.json
+```
+The audit validates captures, groups same-session and exact-duplicate evidence, quarantines unknown labels and assigns whole groups to train/calibration/evaluation. Observed labels remain unverified annotations; the readiness flag is structural only.
