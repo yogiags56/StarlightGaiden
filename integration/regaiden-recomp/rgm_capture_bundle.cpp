@@ -151,8 +151,17 @@ extern "C" bool rgm_capture_bundle(
         !session_id || !session_id[0] ||
         !capture_id || !capture_id[0] ||
         !experiment_id || !experiment_id[0] ||
-        !checkpoint || !checkpoint[0] || repeat == 0) {
-        return fail("RGM capture failed: invalid identity or runtime context");
+        !checkpoint || !checkpoint[0] ||
+        !location_label || !location_label[0] ||
+        !activity || !activity[0] || repeat == 0) {
+        return fail("RGM capture failed: invalid identity, observed location/activity, or runtime context");
+    }
+    if (fs::path(capture_dir).filename() != fs::path(std::string("FP-") + capture_id)) {
+        return fail("RGM capture failed: directory must be named FP-<capture_id>");
+    }
+    const fs::path requested_root(capture_dir);
+    if (requested_root.parent_path().filename() != fs::path(session_id)) {
+        return fail("RGM capture failed: parent directory must match session_id");
     }
     if (!Clock::is_steady) {
         return fail("RGM capture failed: steady clock is not monotonic on this platform");
