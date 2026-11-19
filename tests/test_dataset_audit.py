@@ -48,7 +48,7 @@ class DatasetAuditTests(unittest.TestCase):
             make_capture(root,"SESSION-3","EXP-3-A","Engine Room","third")
             # A copied capture in another session is an exact evidence duplicate and must stay grouped.
             dup_parent=root/"SESSION-4";dup_parent.mkdir()
-            dup=dup_parent/a.name;shutil.copytree(a,dup)
+            dup=dup_parent/"FP-EXP-4-A";shutil.copytree(a,dup)
             meta_path=dup/"capture_metadata.json";meta=json.loads(meta_path.read_text());meta["session_id"]="SESSION-4";meta["capture_id"]="EXP-4-A";meta_path.write_text(json.dumps(meta))
             first=audit_dataset(root,seed=99);second=audit_dataset(root,seed=99)
             self.assertEqual(first["captures"],second["captures"])
