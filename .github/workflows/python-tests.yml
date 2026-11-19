@@ -22,3 +22,5 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: Compile and run C++ capture adapter smoke test
         run: g++ -std=c++20 -Wall -Wextra -Werror -I tests/cpp_stubs -I integration/regaiden-recomp integration/regaiden-recomp/rgm_capture_bundle.cpp tests/cpp_adapter_smoke.cpp -o /tmp/rgm-capture-adapter-smoke && /tmp/rgm-capture-adapter-smoke
+      - name: Finalize C++ adapter fixture with production checksum tool
+        run: python tools/rgm_capture_finalize.py /tmp/rgm-cpp-adapter-smoke/SESSION-TEST/FP-CAP-001
