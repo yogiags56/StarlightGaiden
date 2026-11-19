@@ -77,7 +77,6 @@ int main() {
     assert(!rgm_capture_bundle(&ctx, wrong.string().c_str(), "SESSION-TEST", "CAP-003",
         "EXP-01", "stationary", 3, "Observed corridor", "exploration",
         "Barry", "none", status, sizeof(status)));
-    fs::remove_all(base, ec);
-    std::cout << "RGM C++ adapter smoke tests passed\n";
+    std::cout << "RGM C++ adapter smoke tests passed; fixture bundle: " << first << "\n";
     return 0;
 }
