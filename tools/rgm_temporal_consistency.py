@@ -62,7 +62,7 @@ def review_session(session:Path,max_gap_ms:float=250.0)->dict[str,Any]:
         for cp in exp["capture_checkpoints"]:
             cid=cp["capture_id"];folder=session/("FP-"+cid);mp=folder/"capture_metadata.json"
             if not mp.is_file():
-                result={"status":"insufficient_evidence","errors":[],"warnings":["capture metadata missing"]}
+                result={"status":"insufficient_evidence","errors":[],"warnings":["capture metadata missing"],"frame_markers_match":None,"midpoint_gap_ms":None,"clock_id":None,"state_frame":None,"graphics_frame":None}
                 meta={}
             else:
                 meta=_load(mp);result=_timing(meta,max_gap_ms)
