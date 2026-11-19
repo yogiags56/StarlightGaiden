@@ -124,3 +124,15 @@ The runtime adapter is staged under `integration/regaiden-recomp/`; see [integra
 python tools/rgm_capture_finalize.py dataset/SESSION-0001/FP-EXP-01-CP-01-R01
 ```
 The finalizer hashes the state binary, state summary and all graphics dump files without modifying raw artifacts.
+
+## RGM-001E.17 Upstream Integration
+
+From the StarlightGaiden repository root, apply the guarded integration to the audited upstream checkout:
+
+```bash
+python integration/regaiden-recomp/apply_rgm_adapter.py ../regaiden-recomp
+cmake -S ../regaiden-recomp -B ../regaiden-recomp/build -DCMAKE_BUILD_TYPE=Release
+cmake --build ../regaiden-recomp/build --config Release --parallel
+```
+
+The script checks the upstream HEAD before editing and adds an opt-in one-shot capture CLI. See [RGM-001E.16 integration guide](../docs/analysis/RGM-001E.16-RUNTIME-CAPTURE-ADAPTER.md). Build and runtime testing remain pending.
