@@ -186,27 +186,49 @@ def main() -> None:
     p += r"""
 
 #ifdef __ANDROID__
-/* " + MARKER + r": bridge native capture output to the app's Java MediaStore/SAF exporter. */
+#include <SDL_system.h>
+/* RGM_ANDROID_PUBLIC_EXPORT: use SDL's live Activity instead of FindClass from a native thread. */
 extern "C" void gb_platform_export_rgm_bundle(const char* capture_dir) {
-    if (!capture_dir || !capture_dir[0]) return;
+    if (!capture_dir || !capture_dir[0]) {
+        SDL_Log("RGM export bridge: empty capture path");
+        return;
+    }
     JNIEnv* env = (JNIEnv*)SDL_AndroidGetJNIEnv();
-    if (!env) return;
-    jclass activity = env->FindClass("com/capcom/regaiden/GameActivity");
-    if (!activity) {
-        if (env->ExceptionCheck()) env->ExceptionClear();
+    jobject activity_object = (jobject)SDL_AndroidGetActivity();
+    if (!env || !activity_object) {
+        SDL_Log("RGM export bridge: Android JNI environment or Activity unavailable");
+        return;
+    }
+    jclass activity_class = env->GetObjectClass(activity_object);
+    if (!activity_class) {
+        SDL_Log("RGM export bridge: cannot obtain Activity class");
+        if (env->ExceptionCheck()) { env->ExceptionDescribe(); env->ExceptionClear(); }
+        env->DeleteLocalRef(activity_object);
         return;
     }
     jmethodID method = env->GetStaticMethodID(
-        activity, "exportRgmCaptureFromNative", "(Ljava/lang/String;)V");
-    if (method) {
+        activity_class, "exportRgmCaptureFromNative", "(Ljava/lang/String;)V");
+    if (!method) {
+        SDL_Log("RGM export bridge: Java exporter method not found");
+        if (env->ExceptionCheck()) { env->ExceptionDescribe(); env->ExceptionClear(); }
+    } else {
         jstring path = env->NewStringUTF(capture_dir);
-        if (path) {
-            env->CallStaticVoidMethod(activity, method, path);
+        if (!path) {
+            SDL_Log("RGM export bridge: cannot allocate capture path string");
+        } else {
+            env->CallStaticVoidMethod(activity_class, method, path);
             env->DeleteLocalRef(path);
+            if (env->ExceptionCheck()) {
+                SDL_Log("RGM export bridge: Java callback threw an exception");
+                env->ExceptionDescribe();
+                env->ExceptionClear();
+            } else {
+                SDL_Log("RGM export bridge: Java exporter callback dispatched");
+            }
         }
     }
-    if (env->ExceptionCheck()) env->ExceptionClear();
-    env->DeleteLocalRef(activity);
+    env->DeleteLocalRef(activity_class);
+    env->DeleteLocalRef(activity_object);
 }
 #else
 extern "C" void gb_platform_export_rgm_bundle(const char* capture_dir) {
