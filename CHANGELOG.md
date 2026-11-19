@@ -63,3 +63,12 @@
 - Strengthened validation of capture ID/session directory consistency, required state summaries, and non-empty graphics manifests.
 - Added integration coverage proving generated blank plans are discovered and rejected as incomplete until actual game data is supplied.
 - Added the real capture ingestion specification. No gameplay captures were fabricated or claimed.
+
+## Unreleased — RGM-001E.11 Dataset Audit & Ground-Truth Evaluation
+
+- Added deterministic SHA-256 evidence inventory and exact duplicate grouping.
+- Added leakage-resistant split assignment by connected session/duplicate groups.
+- Added train/calibration/evaluation splits and quarantine for unknown labels.
+- Added dataset audit report and reproducible split manifest output.
+- Added synthetic tests for session leakage, exact duplicate grouping, deterministic assignment, unknown-label quarantine and invalid ratios.
+- No real-game dataset or ground-truth accuracy results are claimed.
