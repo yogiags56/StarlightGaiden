@@ -10,7 +10,9 @@ MAIN = """#include "audio_stats.h"
 int main(int argc, char** argv) {
     const char* state_dump_file = NULL;
     for (int i = 1; i < argc; ++i) {
-        if (strcmp(argv[i], "--trace") == 0) {
+        if (strcmp(argv[i], "--rom") == 0 && i + 1 < argc) {
+            explicit_rom_path = argv[++i];
+        } else if (strcmp(argv[i], "--trace") == 0) {
         }
     }
     if (!rom_loader_acquire_rom(explicit_rom_path)) {
@@ -67,7 +69,7 @@ class UpstreamIntegrationTests(unittest.TestCase):
     def test_missing_anchor_does_not_partially_modify_checkout(self):
         with tempfile.TemporaryDirectory() as td:
             root = Path(td) / "upstream"
-            bad_main = MAIN.replace('        if (strcmp(argv[i], "--trace") == 0) {\n        }\n', "")
+            bad_main = MAIN.replace('        } else if (strcmp(argv[i], "--trace") == 0) {\n        }\n', "")
             src = self.make_checkout(root, bad_main)
             before_main = (src / "Resident_Evil_Gaiden__USA__main.c").read_bytes()
             before_cmake = (src / "CMakeLists.txt").read_bytes()
