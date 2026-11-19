@@ -16,7 +16,7 @@ The current technical candidate is [sergiomanzur/regaiden-recomp](https://github
 
 ## Development status
 
-Current work: **RGM-001E.14 — Real Capture Ingestion & Dataset Quality Review**.
+Current work: **RGM-001E.15 — Capture Synchronization & Temporal Consistency**.
 
 The offline Snapshot Analyzer compares WRAM, HRAM, IO and OAM snapshot blocks. The conservative Scene State Classifier reports UI-family and dialogue-geometry candidates, while leaving unvalidated scene types and character/speaker identity unresolved. The Graphics Comparator compares upstream RGBA framebuffer, tile sheets and 32×32 tilemap cells. The experimental Room Fingerprint Engine hashes rendered tile patterns and tests circular tilemap offsets to report candidate similarity. Synthetic tests are not game-runtime validation; no real game snapshot dataset or Android build is claimed.
 
@@ -42,6 +42,8 @@ See:
 - [Collection Status Auditor](tools/rgm_collection_status.py)
 - [Ingestion Quality Review](docs/analysis/RGM-001E.14-INGESTION-QUALITY-REVIEW.md)
 - [Strict Ingestion Reviewer](tools/rgm_ingestion_review.py)
+- [Temporal Consistency Auditor](tools/rgm_temporal_consistency.py)
+- [Temporal Consistency Protocol](docs/analysis/RGM-001E.15-TEMPORAL-CONSISTENCY.md)
 
 ## Legal and asset policy
 
