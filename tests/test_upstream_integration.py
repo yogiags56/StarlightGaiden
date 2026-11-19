@@ -37,6 +37,12 @@ class UpstreamIntegrationTests(unittest.TestCase):
         src.mkdir(parents=True)
         (src / "Resident_Evil_Gaiden__USA__main.c").write_text(main)
         (src / "CMakeLists.txt").write_text(CMAKE)
+        android_cmake = root / "android/app/jni/CMakeLists.txt"
+        android_cmake.parent.mkdir(parents=True)
+        android_cmake.write_text(
+            "add_library(main SHARED\n"
+            "    \${RECOMPILED_DIR}/asset_dump.c\n"
+            ")\n")
         platform_include = src / "runtime/include"
         platform_source = src / "runtime/src"
         platform_include.mkdir(parents=True)
@@ -50,7 +56,10 @@ class UpstreamIntegrationTests(unittest.TestCase):
             "        case SDL_KEYUP: {\n"
             "                case SDL_SCANCODE_F4:\n"
             "                    capture_guest_snapshot(NULL);\n"
-            "                    return true;\n")
+            "                    return true;\n"
+            "                if (ImGui::Button(\"Capture State Snapshot\", ImVec2(280.0f * ui_scale, 36.0f * ui_scale))) {\n"
+            "                    capture_guest_snapshot(NULL);\n"
+            "                }\n")
         subprocess.run(["git", "init", "-q", str(root)], check=True)
         subprocess.run(["git", "-C", str(root), "config", "user.email", "test@example.invalid"], check=True)
         subprocess.run(["git", "-C", str(root), "config", "user.name", "Test"], check=True)
@@ -72,11 +81,13 @@ class UpstreamIntegrationTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             main = (src / "Resident_Evil_Gaiden__USA__main.c").read_text()
             cmake = (src / "CMakeLists.txt").read_text()
+            android_cmake = (root / "android/app/jni/CMakeLists.txt").read_text()
             self.assertIn("--rgm-capture-dir", main)
             self.assertIn("rgm_capture_pending", main)
             self.assertIn("gb_platform_consume_rgm_capture_request", main)
             self.assertIn("rgm_capture_bundle.cpp", cmake)
-            self.assertIn("SDL_SCANCODE_F8", (src / "runtime/src/platform_sdl.cpp").read_text())
+            self.assertIn("Request RGM Bundle Capture", (src / "runtime/src/platform_sdl.cpp").read_text())
+            self.assertIn("rgm_capture_bundle.cpp", android_cmake)
             self.assertIn("gb_platform_consume_rgm_capture_request", (src / "runtime/include/platform_sdl.h").read_text())
             self.assertTrue((src / "rgm_capture_bundle.cpp").is_file())
             again = self.apply(root)
