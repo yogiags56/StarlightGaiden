@@ -47,3 +47,12 @@ See [SCENE-STATE-CLASSIFICATION.md](SCENE-STATE-CLASSIFICATION.md) for conservat
 ```bash
 python tools/rgm_scene_classifier.py dataset/ --output scene_states.json
 ```
+
+## Controlled Gameplay Experiment Plan
+
+See [RGM-001E.9-CONTROLLED-EXPERIMENTS.md](../docs/analysis/RGM-001E.9-CONTROLLED-EXPERIMENTS.md) and the [experiment matrix](../docs/analysis/RGM-001E.9-EXPERIMENT-MATRIX.json).
+
+```bash
+python tools/rgm_experiment_plan.py --output dataset/SESSION-0001 --session-id SESSION-0001
+```
+The generator creates empty metadata templates only. It does not capture or invent game data.
