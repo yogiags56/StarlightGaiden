@@ -23,3 +23,11 @@ Run its tests with:
 ```bash
 python -m unittest tests.test_room_fingerprint -v
 ```
+
+## Real Capture Validation
+
+See [REAL-CAPTURE-VALIDATION.md](REAL-CAPTURE-VALIDATION.md) for paired capture integrity checks and labeled fingerprint trials.
+
+```bash
+python tools/rgm_capture_validator.py dataset/ --output dataset_validation.json
+```
