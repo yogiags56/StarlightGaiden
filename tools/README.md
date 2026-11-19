@@ -135,4 +135,4 @@ cmake -S ../regaiden-recomp/src/recompiled -B ../regaiden-recomp/build -DCMAKE_B
 cmake --build ../regaiden-recomp/build --config Release --parallel
 ```
 
-The script checks the upstream HEAD before editing and adds an opt-in one-shot capture CLI. See [RGM-001E.16 integration guide](../docs/analysis/RGM-001E.16-RUNTIME-CAPTURE-ADAPTER.md). Build and runtime testing remain pending.
+The script checks the upstream HEAD before editing and adds an opt-in manual F8 capture trigger. Launch with the metadata arguments documented in the [RGM-001E.16 integration guide](../docs/analysis/RGM-001E.16-RUNTIME-CAPTURE-ADAPTER.md), then press F8 at the selected scene. The previous desktop build and no-ROM startup tests passed; the revised manual-F8 upstream build is being revalidated.
