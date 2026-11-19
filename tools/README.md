@@ -115,3 +115,12 @@ See [Temporal Consistency Protocol](../docs/analysis/RGM-001E.15-TEMPORAL-CONSIS
 python tools/rgm_temporal_consistency.py dataset/SESSION-0001 --max-gap-ms 250 --output dataset/SESSION-0001/temporal_review.json
 ```
 Requires monotonic-clock timing metadata and, for a full pass, matching trusted game-frame markers. Timestamp proximity alone is not proof of a frozen game state.
+
+## RGM-001E.16 Capture Bundle Finalizer
+
+The runtime adapter is staged under `integration/regaiden-recomp/`; see [integration guide](../docs/analysis/RGM-001E.16-RUNTIME-CAPTURE-ADAPTER.md). Once the adapter is integrated into a locally built upstream runtime and a real capture is produced, finalize its SHA-256 evidence:
+
+```bash
+python tools/rgm_capture_finalize.py dataset/SESSION-0001/FP-EXP-01-CP-01-R01
+```
+The finalizer hashes the state binary, state summary and all graphics dump files without modifying raw artifacts.
