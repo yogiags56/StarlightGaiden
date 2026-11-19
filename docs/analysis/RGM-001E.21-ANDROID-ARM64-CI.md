@@ -22,6 +22,8 @@ Desktop job and executable artifact upload also passed.
 
 ## Android artifact
 
+Download from [successful GitHub Actions run #40](https://github.com/yogiags56/StarlightGaiden/actions/runs/44599996449) under Artifacts; select `starlightgaiden-android-arm64-debug`.
+
 - Artifact name: `starlightgaiden-android-arm64-debug`
 - Artifact ID: `14569130500`
 - ZIP size: 28,696,744 bytes
