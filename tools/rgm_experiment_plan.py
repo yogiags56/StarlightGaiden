@@ -40,7 +40,7 @@ def generate(matrix_path:Path,out:Path,session_id:str):
                   "observed":{"location_label":"unknown","activity":"unknown","character":"unknown","speaker":"unknown"},
                   "capture":{"state_file":"state.bin","state_summary":"state.txt","graphics_directory":"graphics"},
                   "verification":{"room_identity":"unverified","scene_identity":"unverified","active_character":"unverified","speaker":"unverified"},
-                  "source_sha256":{}},indent=2)+"\\n",encoding="utf-8")
+                  "source_sha256":{}},indent=2)+"\n",encoding="utf-8")
         session["experiments"].append(planned)
     (out/"session_plan.json").write_text(json.dumps(session,indent=2)+"\n",encoding="utf-8")
     return {"session_directory":str(out),"experiments":len(session["experiments"]),
