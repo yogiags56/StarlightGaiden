@@ -24,8 +24,8 @@ Status reflects work actually completed in this repository, not estimates.
 | RGM-001E.15 | Capture Synchronization & Temporal Consistency | Timing/frame evidence auditor and synthetic tests implemented; runtime instrumentation and real paired captures pending |
 | RGM-001E.16 | Runtime Capture Bundle Adapter | C++ adapter, checksum finalizer and integration instructions staged |
 | RGM-001E.17 | Guarded Upstream Integration & Build Verification | Exact-commit integration script, opt-in CLI hook, transactional anchor checks and fixture tests implemented |
-| RGM-001E.18 | Desktop Adapter Smoke Verification | Full upstream desktop build and no-ROM startup/CLI smoke test passed in CI; manual-F8 revision Python/C++ CI passed and full desktop rebuild is pending |
-| RGM-001E.19 | Operator-Triggered Real Gameplay Capture | Manual F8 request queued by SDL and consumed after a completed guest frame; awaiting full desktop rebuild, then first legally sourced real capture |
+| RGM-001E.18 | Desktop Adapter Smoke Verification | Full upstream desktop build and no-ROM startup/CLI smoke test passed for manual-F8 revision (CI #10); Python/C++ adapter tests passed; production finalizer handoff test added and awaiting CI |
+| RGM-001E.19 | Operator-Triggered Real Gameplay Capture | Manual F8 request queued by SDL and consumed after a completed guest frame; upstream build gate passed; first legally sourced real capture pending |
 | RGM-002 | Upstream build and compatibility | Not started |
 | RGM-003 | Gameplay verification | Not started |
 | RGM-004 | Asset pipeline | Not started |
