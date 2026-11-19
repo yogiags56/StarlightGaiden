@@ -2,10 +2,10 @@ import hashlib,json,struct,tempfile,unittest,zlib
 from pathlib import Path
 from tools.rgm_scene_correlator import run_dataset,parse_summary
 from tools.rgm_snapshot_analyzer import MAGIC,EXPECTED
-SIG=b"\\x89PNG\\r\\n\\x1a\\n"
+SIG=b"\x89PNG\r\n\x1a\n"
 def ch(k,d):return struct.pack(">I",len(d))+k+d+struct.pack(">I",zlib.crc32(k+d)&0xffffffff)
 def png(p,w,h,pix):
- raw=b"".join(b"\\0"+pix[y*w*4:(y+1)*w*4] for y in range(h));p.write_bytes(SIG+ch(b"IHDR",struct.pack(">IIBBBBB",w,h,8,6,0,0,0))+ch(b"IDAT",zlib.compress(raw))+ch(b"IEND",b""))
+ raw=b"".join(b"\0"+pix[y*w*4:(y+1)*w*4] for y in range(h));p.write_bytes(SIG+ch(b"IHDR",struct.pack(">IIBBBBB",w,h,8,6,0,0,0))+ch(b"IDAT",zlib.compress(raw))+ch(b"IEND",b""))
 def make(root,cid,label):
  d=root/"SESSION-1"/cid;g=d/"graphics";g.mkdir(parents=True);s=d/"state.bin"
  wr=bytearray(0x8000);wr[0xe8c]=1
