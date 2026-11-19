@@ -48,3 +48,6 @@ jobs:
         run: |
           test -x regaiden-recomp/build/Resident_Evil_Gaiden__USA_
           file regaiden-recomp/build/Resident_Evil_Gaiden__USA_
+
+      - name: Smoke-test desktop startup and RGM CLI without a ROM
+        run: python tests/desktop_startup_smoke.py regaiden-recomp/build/Resident_Evil_Gaiden__USA_
