@@ -88,3 +88,12 @@ python tools/rgm_experiment_plan.py --matrix docs/analysis/RGM-001E.9-EXPERIMENT
 python tools/rgm_collection_status.py dataset/SESSION-0001 --output dataset/SESSION-0001/collection_status.json
 ```
 The plan generator creates blank metadata templates only. The status auditor reports planned/captured/validated/invalid states and requires recorded artifact checksums before calling a capture validated. It does not infer ground-truth room identity.
+
+## RGM-001E.14 Strict Ingestion Review
+
+See [Ingestion Quality Review](../docs/analysis/RGM-001E.14-INGESTION-QUALITY-REVIEW.md).
+
+```bash
+python tools/rgm_ingestion_review.py dataset/SESSION-0001 --output dataset/SESSION-0001/ingestion_review.json
+```
+Checks each planned capture against session/experiment/checkpoint/repeat identity, the strict paired capture validator, full SHA-256 coverage and unexpected capture folders. It is read-only and does not verify ground-truth room identity.
