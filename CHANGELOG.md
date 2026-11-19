@@ -49,3 +49,10 @@
 - Reports a dialogue candidate only from the upstream LCDC/WX/WY geometry heuristic and non-UI bank context.
 - Leaves exploration, cutscene, normal/boss combat, room transition, save/load, active character and speaker unresolved pending real captures.
 - Added synthetic tests for UI-family handling, dialogue geometry and unknown fallback.
+
+## Unreleased — RGM-001E.9 Controlled Gameplay Capture Experiments
+
+- Added an 11-experiment matrix covering exploration, inventory/item detail, PDA/menu, dialogue, ordinary combat, boss combat, room transition, cutscene, save/load, character identity controls and look-alike-room negative controls.
+- Added a blank session-plan generator that creates capture metadata templates only; it does not fabricate state snapshots or graphics.
+- Added tests for template generation, duplicate experiment IDs and path-traversal rejection in session IDs.
+- Added a controlled capture protocol and acceptance gates. Real gameplay captures remain outstanding.
