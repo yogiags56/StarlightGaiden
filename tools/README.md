@@ -39,3 +39,11 @@ See [MULTI-SIGNAL-CORRELATION.md](MULTI-SIGNAL-CORRELATION.md) for map, memory, 
 ```bash
 python tools/rgm_scene_correlator.py dataset/ --output scene_correlation.json
 ```
+
+## Scene State Classification Foundation
+
+See [SCENE-STATE-CLASSIFICATION.md](SCENE-STATE-CLASSIFICATION.md) for conservative UI-family and dialogue-geometry evidence rules.
+
+```bash
+python tools/rgm_scene_classifier.py dataset/ --output scene_states.json
+```
