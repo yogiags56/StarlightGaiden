@@ -115,6 +115,17 @@ def main() -> int:
     main_text = replace_once(
         main_text,
         '    if (!rom_loader_acquire_rom(explicit_rom_path)) {\n',
+        '#ifdef __ANDROID__\n'
+        '    if (!rgm_capture_dir) {\n'
+        '        rgm_session = "SESSION-ANDROID-0001";\n'
+        '        rgm_experiment = "ANDROID-TOUCH-001";\n'
+        '        rgm_checkpoint = "UNLABELED";\n'
+        '        rgm_location = "unlabeled";\n'
+        '        rgm_activity = "unclassified";\n'
+        '        rgm_character = "unknown";\n'
+        '        rgm_speaker = "unknown";\n'
+        '    }\n'
+        '#endif\n'
         '    if (rgm_capture_dir) {\n'
         '        if (!rgm_session || !rgm_capture_id || !rgm_experiment || !rgm_checkpoint || !rgm_location || !rgm_activity) {\n'
         '            fprintf(stderr, "RGM capture requires --rgm-session, --rgm-capture-id, --rgm-experiment, --rgm-checkpoint, --rgm-location and --rgm-activity\\n"); return 1;\n'
@@ -122,17 +133,6 @@ def main() -> int:
         '    }\n'
         '    if (!rom_loader_acquire_rom(explicit_rom_path)) {\n',
         "RGM CLI validation")
-#ifdef __ANDROID__
-    if (!rgm_capture_dir) {
-        rgm_session = "SESSION-ANDROID-0001";
-        rgm_experiment = "ANDROID-TOUCH-001";
-        rgm_checkpoint = "UNLABELED";
-        rgm_location = "unlabeled";
-        rgm_activity = "unclassified";
-        rgm_character = "unknown";
-        rgm_speaker = "unknown";
-    }
-#endif
     main_text = replace_once(
         main_text,
         '            gbrt_port_render(ctx, 1280, 720);\n#endif\n            const uint32_t* fb = gb_get_framebuffer(ctx);\n',
