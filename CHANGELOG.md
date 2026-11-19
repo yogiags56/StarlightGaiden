@@ -100,3 +100,12 @@
 - Flags unknown operator labels for review without treating them as ground truth.
 - Added synthetic tests for empty plans, full checksum coverage, missing checksum, wrong checkpoint, unexpected folders and session identity mismatch.
 - No real gameplay captures or room-classification accuracy are claimed.
+
+## Unreleased — RGM-001E.15 Capture Synchronization & Temporal Consistency
+
+- Added temporal evidence auditor for paired state and graphics dump intervals.
+- Added monotonic-clock interval checks, configurable midpoint-gap review and optional frame-marker equality.
+- Missing frame markers remain review-required; timestamp proximity alone cannot prove a frozen game state.
+- Added repeated-checkpoint timing summaries without comparing frame numbers across separate repeats.
+- Added synthetic tests for matched/mismatched frames, large gaps, missing evidence, invalid intervals and clock metadata.
+- No runtime frame instrumentation or real synchronized game captures are claimed.
