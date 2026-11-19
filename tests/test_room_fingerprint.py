@@ -54,7 +54,8 @@ class RoomFingerprintTests(unittest.TestCase):
             write_png(p,256,256,pixels)
             a=extract_cells(p)
             result=compare_fingerprints(a,a,max_shift=0,min_overlap=900)
-            self.assertEqual(result["status"],"candidate_match")
+            self.assertEqual(result["status"],"insufficient_evidence")
             self.assertEqual(result["best_alignment"]["weighted_similarity"],1.0)
+            self.assertFalse(result["pattern_diversity_sufficient"])
 if __name__=="__main__":
     unittest.main()
