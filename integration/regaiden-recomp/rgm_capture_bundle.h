@@ -1,7 +1,8 @@
 #ifndef RGM_CAPTURE_BUNDLE_H
 #define RGM_CAPTURE_BUNDLE_H
 
-#include <cstddef>
+#include <stdbool.h>
+#include <stddef.h>
 #include "gbrt.h"
 
 #ifdef __cplusplus
