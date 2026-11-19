@@ -91,3 +91,12 @@
 - Added synthetic tests for blank plans, validated paired dumps, incomplete captures, path traversal and session identity mismatch.
 - Documented the 11-experiment/45-checkpoint/3-repeat capture workflow and provenance requirements.
 - No real gameplay capture data is included or claimed.
+
+## Unreleased — RGM-001E.14 Real Capture Ingestion & Dataset Quality Review
+
+- Added read-only session ingestion review against planned capture identity.
+- Validates capture/session/experiment/checkpoint/repeat fields, strict paired artifacts and full SHA-256 coverage.
+- Reports planned, captured, validated and invalid states plus unexpected capture folders.
+- Flags unknown operator labels for review without treating them as ground truth.
+- Added synthetic tests for empty plans, full checksum coverage, missing checksum, wrong checkpoint, unexpected folders and session identity mismatch.
+- No real gameplay captures or room-classification accuracy are claimed.
