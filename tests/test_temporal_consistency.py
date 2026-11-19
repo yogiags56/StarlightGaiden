@@ -38,6 +38,15 @@ class TemporalConsistencyTests(unittest.TestCase):
    root=Path(td);session(root)
    r=review_session(root)
    self.assertEqual(r["captures"][0]["status"],"insufficient_evidence")
+   self.assertIsNone(r["captures"][0]["frame_markers_match"])
+ def test_missing_metadata_is_reported_without_crashing_summary(self):
+  with tempfile.TemporaryDirectory() as td:
+   root=Path(td)
+   plan={"schema_version":1,"session_id":"SESSION-TEMP","experiments":[{"experiment_id":"EXP-01","capture_checkpoints":[{"capture_id":"EXP-01-CP-01-R01","checkpoint":"x","repeat":1}]}]}
+   (root/"session_plan.json").write_text(json.dumps(plan))
+   r=review_session(root)
+   self.assertEqual(r["captures"][0]["status"],"insufficient_evidence")
+   self.assertEqual(r["summary"]["frame_verified_captures"],0)
  def test_bad_interval_invalid(self):
   with tempfile.TemporaryDirectory() as td:
    root=Path(td);session(root,{1:timing(ss=20,se=10),2:timing()})
