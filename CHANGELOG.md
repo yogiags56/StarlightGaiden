@@ -72,3 +72,12 @@
 - Added dataset audit report and reproducible split manifest output.
 - Added synthetic tests for session leakage, exact duplicate grouping, deterministic assignment, unknown-label quarantine and invalid ratios.
 - No real-game dataset or ground-truth accuracy results are claimed.
+
+## Unreleased — RGM-001E.12 Verified Ground-Truth Evaluation
+
+- Added explicit human-verified room annotation schema requiring reviewer and evidence notes.
+- Added calibration-only threshold selection using balanced accuracy, with F1 and higher-threshold tie-breaks.
+- Added independent holdout evaluation with confusion counts and standard classification metrics.
+- Cross-split and unverified-label pairs are excluded; calibration requires both same-room and different-room examples.
+- Added synthetic tests for calibration/holdout separation, unverified annotations, missing classes and annotation provenance.
+- No real-game labels or performance results are claimed.
