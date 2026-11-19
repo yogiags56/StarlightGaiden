@@ -37,7 +37,7 @@ def review_session(session:Path)->dict[str,Any]:
     if session.name.startswith("SESSION-") and plan["session_id"]!=session.name:
         raise IngestionReviewError("session directory and plan session_id mismatch")
     expected=_expected(plan);rows=[];seen=set();unexpected=[]
-    folders={p.name[3:]:p for p in session.glob("FP-*/capture_metadata.json") if p.parent.is_dir()}
+    folders={p.parent.name[3:]:p.parent for p in session.glob("FP-*/capture_metadata.json") if p.parent.is_dir()}
     for cid,identity in expected.items():
         folder=session/("FP-"+cid);mp=folder/"capture_metadata.json"
         if not mp.is_file():
