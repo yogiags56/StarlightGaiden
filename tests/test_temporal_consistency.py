@@ -57,6 +57,13 @@ class TemporalConsistencyTests(unittest.TestCase):
    root=Path(td);session(root,{1:timing(clock="clock-A"),2:timing()})
    r=review_session(root)
    self.assertEqual(r["captures"][0]["clock_id"],"clock-A")
+ def test_runtime_unstable_frame_flag_invalidates_capture(self):
+  with tempfile.TemporaryDirectory() as td:
+   root=Path(td);t=timing();t.update({"state_frame_stable":True,"graphics_frame_stable":True,"same_completed_frame":False})
+   session(root,{1:t,2:timing()})
+   r=review_session(root)
+   self.assertEqual(r["captures"][0]["status"],"invalid")
+   self.assertTrue(any("same_completed_frame" in e for e in r["captures"][0]["errors"]))
  def test_negative_gap_limit_rejected(self):
   with tempfile.TemporaryDirectory() as td:
    root=Path(td);session(root)
