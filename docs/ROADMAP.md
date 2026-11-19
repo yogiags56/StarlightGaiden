@@ -21,6 +21,7 @@ Status reflects work actually completed in this repository, not estimates.
 | RGM-001E.12 | Verified Ground-Truth Evaluation | Human-verified annotation schema, calibration-only threshold selection and holdout evaluator implemented; real evaluation pending |
 | RGM-001E.13 | Real Gameplay Dataset Collection | Collection status auditor and capture workflow documented; waiting for actual paired gameplay dumps |
 | RGM-001E.14 | Real Capture Ingestion & Quality Review | Read-only plan identity, artifact/checksum coverage and unexpected-folder reviewer implemented; waiting for real dumps |
+| RGM-001E.15 | Capture Synchronization & Temporal Consistency | Timing/frame evidence auditor and synthetic tests implemented; runtime instrumentation and real paired captures pending |
 | RGM-001E.15 | Capture Synchronization & Temporal Consistency | Timing/frame evidence auditor and synthetic tests implemented; runtime instrumentation and real paired captures still pending |
 | RGM-002 | Upstream build and compatibility | Not started |
 | RGM-003 | Gameplay verification | Not started |
@@ -36,6 +37,7 @@ Status reflects work actually completed in this repository, not estimates.
 1. Generate a session plan with `python tools/rgm_experiment_plan.py --output dataset/SESSION-0001 --session-id SESSION-0001`.
 2. Record collection progress with `python tools/rgm_collection_status.py dataset/SESSION-0001 --output collection_status.json`.
 3. Run strict plan/provenance review with `python tools/rgm_ingestion_review.py dataset/SESSION-0001 --output ingestion_review.json`.
+4. Assess dump timing/frame evidence with `python tools/rgm_temporal_consistency.py dataset/SESSION-0001 --output temporal_review.json`.
 4. Assess dump timing/frame evidence with `python tools/rgm_temporal_consistency.py dataset/SESSION-0001 --output temporal_review.json`.
 2. Populate generated FP capture folders with actual paired dumps; run the capture validator.
 3. Execute reachable experiments in `docs/analysis/RGM-001E.9-EXPERIMENT-MATRIX.json` and capture paired state/graphics dumps.
