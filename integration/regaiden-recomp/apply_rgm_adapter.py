@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Apply the staged RGM capture adapter to an exact local upstream checkout."""
+"""Apply the staged RGM capture adapter to an exact local upstream checkout.
+
+Android builds expose a touch-menu capture request and neutral placeholder labels;
+operators must annotate observed scene identity after exporting the bundle.
+"""
 from __future__ import annotations
 import argparse, shutil, subprocess, sys
 from pathlib import Path
