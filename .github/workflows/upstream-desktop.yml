@@ -99,6 +99,8 @@ jobs:
         run: sdkmanager "ndk;26.2.11394342" "cmake;3.22.1"
       - name: Apply guarded RGM integration
         run: python3 integration/regaiden-recomp/apply_rgm_adapter.py regaiden-recomp
+      - name: Add Android RGM public Downloads export
+        run: python3 integration/regaiden-recomp/apply_android_rgm_export.py regaiden-recomp
       - name: Build Android ARM64 APK
         working-directory: regaiden-recomp/android
         run: |
