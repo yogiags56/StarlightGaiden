@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
-MAGIC = b"REGAIDEN-SNAPSHOT-1\\0"
+MAGIC = b"REGAIDEN-SNAPSHOT-1\0"
 EXPECTED = {"wram": 0x8000, "hram": 0x7F, "io": 0x80, "oam": 0xA0}
 
 
@@ -117,7 +117,7 @@ def compare(a: dict[str, Any], b: dict[str, Any]) -> dict[str, Any]:
 
 def png_info(path: Path) -> dict[str, Any]:
     data = path.read_bytes()
-    if len(data) < 33 or data[:8] != b"\\x89PNG\\r\\n\\x1a\\n" or data[12:16] != b"IHDR":
+    if len(data) < 33 or data[:8] != b"\x89PNG\r\n\x1a\n" or data[12:16] != b"IHDR":
         raise SnapshotError(f"PNG tidak valid: {path}")
     width, height, depth, color_type, compression, filtering, interlace = struct.unpack(
         ">IIBBBBB", data[16:29])
@@ -164,7 +164,7 @@ def main() -> int:
             report["graphics_b"] = inspect_graphics(args.graphics_b)
         payload = json.dumps(report, indent=2, ensure_ascii=False)
         if args.output:
-            args.output.write_text(payload + "\\n", encoding="utf-8")
+            args.output.write_text(payload + "\n", encoding="utf-8")
             print(f"Report ditulis: {args.output}")
         else:
             print(payload)
