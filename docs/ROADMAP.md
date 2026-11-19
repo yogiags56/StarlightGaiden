@@ -26,7 +26,8 @@ Status reflects work actually completed in this repository, not estimates.
 | RGM-001E.17 | Guarded Upstream Integration & Build Verification | Exact-commit integration script, opt-in CLI hook, transactional anchor checks and fixture tests implemented |
 | RGM-001E.18 | Desktop Adapter Smoke Verification | Full upstream desktop build and no-ROM startup/CLI smoke test passed for manual-F8 revision (CI #10); Python/C++ adapter tests passed; production finalizer handoff test added and awaiting CI |
 | RGM-001E.19 | Operator-Triggered Real Gameplay Capture | Desktop manual trigger and upstream build passed; real gameplay capture pending |
-| RGM-001E.20 | Android ARM64 Build & Touch Capture Integration | Adapter registered in Android JNI CMake; touch-menu capture button and app-storage output path added; Python fixture CI passed; Android APK build and device validation pending |
+| RGM-001E.20 | Android ARM64 Build & Touch Capture Integration | Android JNI CMake registration and touch-menu capture integration complete; Python fixture CI passed |
+| RGM-001E.21 | Android ARM64 CI Build Verification | Android Gradle build, ARM64 library checks, artifact upload and desktop build passed in CI; physical-device/runtime capture validation pending |
 | RGM-002 | Upstream build and compatibility | Not started |
 | RGM-003 | Gameplay verification | Not started |
 | RGM-004 | Asset pipeline | Not started |
@@ -38,13 +39,13 @@ Status reflects work actually completed in this repository, not estimates.
 
 ## Immediate sequence
 
-1. Clone `sergiomanzur/regaiden-recomp` at audited commit `e5befd20e67939d939319149d1c1177b8e6c5cd6`.
-2. Apply `python integration/regaiden-recomp/apply_rgm_adapter.py ../regaiden-recomp` from the StarlightGaiden repository root.
-3. Configure and build the complete upstream desktop target with CMake.
-4. Run without RGM options and verify ordinary gameplay remains unchanged.
-5. Run one opt-in capture with a legally obtained local ROM and operator-confirmed labels.
-6. Finalize SHA-256 values and run capture ingestion/temporal reviewers.
-7. Build and validate Android ARM64 APK through CI; desktop remains a CI-only verification target.\n8. Install on the user's Android device, test touch controls and collect the first real paired capture.
+1. Download the `starlightgaiden-android-arm64-debug` artifact from the successful Android CI run (artifact ID `14569130500`).
+2. Install the debug APK on the user's Android ARM64 phone.
+3. Verify first launch, Android Back/menu behavior, Diagnostics touch button, and app-specific capture directory permissions.
+4. Open a legally obtained local game ROM and capture one paired state/graphics bundle.
+5. Inspect bundle files, metadata, and SHA-256 values; annotate room, activity and character only after operator confirmation.
+6. Run the strict ingestion, dataset audit and temporal consistency tools on the first real capture.
+7. Only after multiple labeled captures, evaluate room fingerprint and scene classification accuracy.
 
 ## Earlier analysis sequence
 
