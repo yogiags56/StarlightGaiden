@@ -98,14 +98,15 @@ def compare_fingerprints(a: dict[str, Any], b: dict[str, Any],
                     equal += 1
             score = matched_weight / total_weight if total_weight else 0.0
             candidate = {"dx_tiles": dx, "dy_tiles": dy, "overlap_cells": overlap,
-                         "exact_matching_cells": equal, "weighted_similarity": score}
+                         "exact_matching_cells": equal, "weighted_similarity": score,
+                         "unique_patterns_in_overlap": len(freq_a)}
             if best is None or (score, overlap, equal) > (
                 best["weighted_similarity"], best["overlap_cells"], best["exact_matching_cells"]):
                 best = candidate
     if best is None:
         return {"status": "insufficient_evidence", "reason": "no comparable static cells"}
     enough = best["overlap_cells"] >= min_overlap
-    unique_patterns = len(set(va for va, _ in pairs)) if pairs else 0
+    unique_patterns = best["unique_patterns_in_overlap"]
     diverse = unique_patterns >= 4
     # These are provisional engineering gates, not empirically calibrated thresholds.
     status = "candidate_match" if enough and diverse and best["weighted_similarity"] >= 0.82 else (
