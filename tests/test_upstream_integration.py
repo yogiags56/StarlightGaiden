@@ -37,6 +37,20 @@ class UpstreamIntegrationTests(unittest.TestCase):
         src.mkdir(parents=True)
         (src / "Resident_Evil_Gaiden__USA__main.c").write_text(main)
         (src / "CMakeLists.txt").write_text(CMAKE)
+        platform_include = src / "runtime/include"
+        platform_source = src / "runtime/src"
+        platform_include.mkdir(parents=True)
+        platform_source.mkdir(parents=True)
+        (platform_include / "platform_sdl.h").write_text(
+            "bool gb_platform_poll_events(GBContext* ctx);\\n")
+        (platform_source / "platform_sdl.cpp").write_text(
+            "static bool handle_runtime_event(const SDL_Event* event, GBContext* ctx) {\\n"
+            "    switch (event->type) {\\n"
+            "        case SDL_KEYDOWN:\\n"
+            "        case SDL_KEYUP: {\\n"
+            "                case SDL_SCANCODE_F4:\\n"
+            "                    capture_guest_snapshot(NULL);\\n"
+            "                    return true;\\n")
         subprocess.run(["git", "init", "-q", str(root)], check=True)
         subprocess.run(["git", "-C", str(root), "config", "user.email", "test@example.invalid"], check=True)
         subprocess.run(["git", "-C", str(root), "config", "user.name", "Test"], check=True)
@@ -60,7 +74,10 @@ class UpstreamIntegrationTests(unittest.TestCase):
             cmake = (src / "CMakeLists.txt").read_text()
             self.assertIn("--rgm-capture-dir", main)
             self.assertIn("rgm_capture_pending", main)
+            self.assertIn("gb_platform_consume_rgm_capture_request", main)
             self.assertIn("rgm_capture_bundle.cpp", cmake)
+            self.assertIn("SDL_SCANCODE_F8", (src / "runtime/src/platform_sdl.cpp").read_text())
+            self.assertIn("gb_platform_consume_rgm_capture_request", (src / "runtime/include/platform_sdl.h").read_text())
             self.assertTrue((src / "rgm_capture_bundle.cpp").is_file())
             again = self.apply(root)
             self.assertNotEqual(again.returncode, 0)
