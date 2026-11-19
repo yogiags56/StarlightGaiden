@@ -37,7 +37,8 @@ def inspect_capture(directory: Path) -> dict[str,Any]:
     for k in ("capture_id","session_id"):
         if not isinstance(m.get(k),str) or not m[k]: errors.append(f"{k} missing")
     if directory.name.startswith("FP-") and isinstance(m.get("capture_id"),str):
-        if directory.name != "FP-"+m["capture_id"]: errors.append("capture_id does not match FP directory name")
+        if directory.name not in ("FP-"+m["capture_id"],m["capture_id"]):
+            errors.append("capture_id does not match FP directory name")
     if directory.parent.name.startswith("SESSION-") and m.get("session_id") != directory.parent.name:
         errors.append("session_id does not match parent session directory")
     observed=m.get("observed") if isinstance(m.get("observed"),dict) else {}
