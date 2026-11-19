@@ -16,7 +16,7 @@ The current technical candidate is [sergiomanzur/regaiden-recomp](https://github
 
 ## Development status
 
-Current work: **RGM-001E.8 — Scene State Classification Foundation**.
+Current work: **RGM-001E.9 — Controlled Gameplay Capture Experiments**.
 
 The offline Snapshot Analyzer compares WRAM, HRAM, IO and OAM snapshot blocks. The conservative Scene State Classifier reports UI-family and dialogue-geometry candidates, while leaving unvalidated scene types and character/speaker identity unresolved. The Graphics Comparator compares upstream RGBA framebuffer, tile sheets and 32×32 tilemap cells. The experimental Room Fingerprint Engine hashes rendered tile patterns and tests circular tilemap offsets to report candidate similarity. Synthetic tests are not game-runtime validation; no real game snapshot dataset or Android build is claimed.
 
@@ -28,6 +28,9 @@ See:
 - [Snapshot Analyzer](tools/rgm_snapshot_analyzer.py)
 - [Graphics Comparator](tools/rgm_graphics_comparator.py)
 - [Room Fingerprint Tool](tools/rgm_room_fingerprint.py)\n- [Scene State Classifier](tools/rgm_scene_classifier.py)\n- [Scene Classification Specification](tools/SCENE-STATE-CLASSIFICATION.md)
+- [Controlled Gameplay Experiments](docs/analysis/RGM-001E.9-CONTROLLED-EXPERIMENTS.md)
+- [Experiment Matrix](docs/analysis/RGM-001E.9-EXPERIMENT-MATRIX.json)
+- [Experiment Plan Generator](tools/rgm_experiment_plan.py)
 
 ## Legal and asset policy
 
