@@ -82,7 +82,20 @@ def review_session(session:Path)->dict[str,Any]:
             value=observed.get(key)
             if not isinstance(value,str) or not value.strip() or value.strip().casefold() in ("unknown","unrecorded","n/a"):
                 warnings.append(f"observed.{key} needs operator review")
-        if errors:status="invalid"
+        cap_for_presence=m.get("capture") if isinstance(m.get("capture"),dict) else {}
+        try:
+            state_present=_safe(folder,cap_for_presence.get("state_file")).is_file()
+            summary_present=_safe(folder,cap_for_presence.get("state_summary")).is_file()
+            graphics_dir=_safe(folder,cap_for_presence.get("graphics_directory"))
+            graphics_present=graphics_dir.is_dir() and any(p.is_file() for p in graphics_dir.rglob("*"))
+        except IngestionReviewError:
+            state_present=summary_present=graphics_present=False
+        identity_mismatch=any(any(key in e for key in ("capture_id mismatch","session_id mismatch","experiment_id mismatch","checkpoint mismatch","repeat mismatch","escapes capture folder")) for e in errors)
+        if identity_mismatch:status="invalid"
+        elif not state_present and not summary_present and not graphics_present:
+            status="planned"
+            warnings.append("capture artifacts have not yet been collected")
+        elif errors:status="invalid"
         elif base_report["status"]=="valid" and not missing and not extra and not mismatched:status="validated"
         elif required:status="captured"
         else:status="planned"
