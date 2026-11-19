@@ -25,7 +25,7 @@ class Tests(unittest.TestCase):
  def test_valid_and_pairs(self):
   with tempfile.TemporaryDirectory() as td:
    r=Path(td); capture(r,"FP-1","Corridor"); capture(r,"FP-2","Corridor"); capture(r,"FP-3","Engine")
-   x=run_dataset(r,0,900); self.assertEqual(x["summary"]["captures_valid"],3); self.assertEqual(x["summary"]["pair_trials"],3)
+   x=run_dataset(r,0,900); self.assertEqual(x["summary"]["captures_valid"],3, x["capture_checks"]); self.assertEqual(x["summary"]["pair_trials"],3)
    self.assertEqual(x["summary"]["same_label_pairs"],1); self.assertEqual(x["summary"]["different_label_pairs"],2)
  def test_bad_checksum(self):
   with tempfile.TemporaryDirectory() as td:
