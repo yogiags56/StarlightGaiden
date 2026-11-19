@@ -30,7 +30,7 @@ def parse_summary(path):
  "active_sprite_count":r"^active_sprite_count=(\d+)$"}
  for k,p in pats.items():
   m=re.search(p,t,re.M)
-  if m: out[k]=m.group(1) if k=="label" else int(m.group(1),10 if k=="active_sprite_count" else 16)
+  if m: out[k]=m.group(1) if k=="label" else int(m.group(1),10 if k in ("rom_bank","wram_bank","active_sprite_count") else 16)
  out["active_sprites"]=[{"index":int(m[0]),"y":int(m[1]),"x":int(m[2]),"tile":int(m[3],16),"flags":int(m[4],16)}
   for m in re.findall(r"^obj(\d+)\s+y=\s*(\d+)\s+x=\s*(\d+)\s+tile=([0-9A-Fa-f]{2})\s+flags=([0-9A-Fa-f]{2})$",t,re.M)]
  return out
