@@ -6,6 +6,7 @@ on:
       - "integration/regaiden-recomp/**"
       - "docs/analysis/RGM-001E.16-RUNTIME-CAPTURE-ADAPTER.md"
       - ".github/workflows/upstream-desktop.yml"
+      - ".github/workflows/android-arm64.yml"
   workflow_dispatch:
 
 permissions:
@@ -59,7 +60,7 @@ jobs:
             echo "project=Resident Evil Gaiden Remastered"
             echo "upstream_repository=https://github.com/sergiomanzur/regaiden-recomp"
             echo "upstream_commit=e5befd20e67939d939319149d1c1177b8e6c5cd6"
-            echo "integration=StarlightGaiden manual F8 capture adapter"
+            echo "integration=StarlightGaiden touch-menu capture adapter"
             echo "platform=Linux x86_64 (Ubuntu 24.04)"
             echo "binary_sha256=$(sha256sum dist/Resident_Evil_Gaiden__USA_ | cut -d' ' -f1)"
             echo "dynamic_dependencies:"
@@ -70,5 +71,47 @@ jobs:
         with:
           name: regaiden-desktop-linux-x86_64-rgm-f8
           path: dist/
+          if-no-files-found: error
+          retention-days: 14
+
+  android-arm64:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Check out StarlightGaiden
+        uses: actions/checkout@v4
+      - name: Check out audited upstream source
+        uses: actions/checkout@v4
+        with:
+          repository: sergiomanzur/regaiden-recomp
+          ref: e5befd20e67939d939319149d1c1177b8e6c5cd6
+          path: regaiden-recomp
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Install Android SDK and NDK
+        uses: android-actions/setup-android@v3
+      - name: Install pinned Android NDK and CMake
+        run: sdkmanager "ndk;26.2.11394342" "cmake;3.22.1"
+      - name: Apply guarded RGM integration
+        run: python3 integration/regaiden-recomp/apply_rgm_adapter.py regaiden-recomp
+      - name: Build Android ARM64 APK
+        working-directory: regaiden-recomp/android
+        run: |
+          chmod +x ./gradlew
+          ./gradlew --no-daemon --stacktrace assembleDebug
+      - name: Verify ARM64 APK
+        run: |
+          APK=regaiden-recomp/android/app/build/outputs/apk/debug/app-debug.apk
+          test -s "$APK"
+          unzip -l "$APK" | grep -q 'lib/arm64-v8a/libmain.so'
+          unzip -l "$APK" | grep -q 'lib/arm64-v8a/libSDL2.so'
+      - name: Upload Android ARM64 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: starlightgaiden-android-arm64-debug
+          path: regaiden-recomp/android/app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
           retention-days: 14
