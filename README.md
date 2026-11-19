@@ -16,17 +16,18 @@ The current technical candidate is [sergiomanzur/regaiden-recomp](https://github
 
 ## Development status
 
-Current work: **RGM-001E.4 — Graphics & Tilemap Comparator**.
+Current work: **RGM-001E.5 — Room Fingerprint Engine**.
 
-The offline Snapshot Analyzer compares WRAM, HRAM, IO and OAM snapshot blocks. The Graphics Comparator decodes upstream 8-bit RGBA PNG exports and compares framebuffer pixels, tile sheets and 32×32 tilemap cells. Synthetic tests are not game-runtime validation; no real game snapshot dataset or Android build is claimed yet.
+The offline Snapshot Analyzer compares WRAM, HRAM, IO and OAM snapshot blocks. The Graphics Comparator compares upstream RGBA framebuffer, tile sheets and 32×32 tilemap cells. The experimental Room Fingerprint Engine hashes rendered tile patterns and tests circular tilemap offsets to report candidate similarity. Synthetic tests are not game-runtime validation; no real game snapshot dataset or Android build is claimed.
 
 See:
 - [Roadmap](docs/ROADMAP.md)
 - [Architecture and provenance](docs/ARCHITECTURE.md)
 - [RGM-001E dataset and fingerprint protocol](docs/analysis/RGM-001E-SNAPSHOT-PROTOCOL.md)
+- [Room Fingerprint Engine](tools/ROOM-FINGERPRINT.md)
 - [Snapshot Analyzer](tools/rgm_snapshot_analyzer.py)
 - [Graphics Comparator](tools/rgm_graphics_comparator.py)
-- [Comparator usage](tools/GRAPHICS-COMPARATOR.md)
+- [Room Fingerprint Tool](tools/rgm_room_fingerprint.py)
 
 ## Legal and asset policy
 
