@@ -49,14 +49,14 @@ class DatasetAuditTests(unittest.TestCase):
             # A copied capture in another session is an exact evidence duplicate and must stay grouped.
             dup_parent=root/"SESSION-4";dup_parent.mkdir()
             dup=dup_parent/a.name;shutil.copytree(a,dup)
-            meta_path=dup/"capture_metadata.json";meta=json.loads(meta_path.read_text());meta["session_id"]="SESSION-4";meta_path.write_text(json.dumps(meta))
+            meta_path=dup/"capture_metadata.json";meta=json.loads(meta_path.read_text());meta["session_id"]="SESSION-4";meta["capture_id"]="EXP-4-A";meta_path.write_text(json.dumps(meta))
             first=audit_dataset(root,seed=99);second=audit_dataset(root,seed=99)
             self.assertEqual(first["captures"],second["captures"])
             self.assertEqual(first["summary"]["exact_duplicate_groups"],1)
             assignments={x["capture_id"]:x["split"] for x in first["captures"]}
-            self.assertEqual(assignments["EXP-1-A"],assignments["EXP-1-A"])
-            self.assertEqual(first["summary"]["independent_groups"],2)
-            self.assertFalse(first["summary"]["evaluation_ready"])
+            self.assertEqual(assignments["EXP-1-A"],assignments["EXP-4-A"])
+            self.assertEqual(first["summary"]["independent_groups"],3)
+            self.assertTrue(first["summary"]["evaluation_ready"])
 
     def test_invalid_split_ratios_rejected(self):
         with tempfile.TemporaryDirectory() as td:
