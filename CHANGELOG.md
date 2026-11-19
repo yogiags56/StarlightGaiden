@@ -82,3 +82,12 @@
 - Added synthetic tests for calibration/holdout separation, unverified annotations, missing classes and annotation provenance.
 - Corrected the single-class calibration fixture to exercise the intended insufficient-class guard.
 - No real-game labels or performance results are claimed.
+
+## Unreleased — RGM-001E.13 Real Gameplay Dataset Collection
+
+- Added a read-only collection progress auditor for planned, captured, validated and invalid checkpoints.
+- Added capture/session identity and path traversal checks to the collection status report.
+- Require recorded source SHA-256 metadata before a capture is marked validated.
+- Added synthetic tests for blank plans, validated paired dumps, incomplete captures, path traversal and session identity mismatch.
+- Documented the 11-experiment/45-checkpoint/3-repeat capture workflow and provenance requirements.
+- No real gameplay capture data is included or claimed.
