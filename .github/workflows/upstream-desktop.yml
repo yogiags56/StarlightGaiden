@@ -25,7 +25,6 @@ jobs:
           repository: sergiomanzur/regaiden-recomp
           ref: e5befd20e67939d939319149d1c1177b8e6c5cd6
           path: regaiden-recomp
-          submodules: recursive
 
       - name: Install desktop build dependencies
         run: |
