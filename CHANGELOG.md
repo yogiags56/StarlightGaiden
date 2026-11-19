@@ -56,3 +56,10 @@
 - Added a blank session-plan generator that creates capture metadata templates only; it does not fabricate state snapshots or graphics.
 - Added tests for template generation, duplicate experiment IDs and path-traversal rejection in session IDs.
 - Added a controlled capture protocol and acceptance gates. Real gameplay captures remain outstanding.
+
+## Unreleased — RGM-001E.10 Real Gameplay Capture Ingestion
+
+- Fixed the capture-plan generator to emit FP-prefixed directories consumed by the dataset validator.
+- Strengthened validation of capture ID/session directory consistency, required state summaries, and non-empty graphics manifests.
+- Added integration coverage proving generated blank plans are discovered and rejected as incomplete until actual game data is supplied.
+- Added the real capture ingestion specification. No gameplay captures were fabricated or claimed.
