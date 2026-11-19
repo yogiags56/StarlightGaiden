@@ -17,7 +17,7 @@ Status reflects work actually completed in this repository, not estimates.
 | RGM-001E.8 | Scene State Classification Foundation | Implemented; synthetic evidence and unknown-fallback tests pass; awaiting real captures |
 | RGM-001E.9 | Controlled Gameplay Capture Experiments | Protocol, 11-experiment matrix and blank-plan generator implemented; awaiting actual game captures |
 | RGM-001E.10 | Real Gameplay Capture Ingestion | Canonical folder layout and strict metadata/integrity validation implemented; real captures still outstanding |
-| RGM-001E.11 | Dataset Audit & Ground-Truth Evaluation | Deterministic session-grouped split planner, exact duplicate audit and quarantine rules implemented; real labels/captures still outstanding |
+| RGM-001E.11 | Dataset Audit & Ground-Truth Evaluation | Deterministic session-grouped split planner, exact duplicate audit and quarantine rules implemented; real labels/captures still outstanding |\n| RGM-001E.12 | Verified Ground-Truth Evaluation | Human-verified annotation schema, calibration-only threshold selection and holdout evaluator implemented; real evaluation pending |
 | RGM-002 | Upstream build and compatibility | Not started |
 | RGM-003 | Gameplay verification | Not started |
 | RGM-004 | Asset pipeline | Not started |
@@ -35,7 +35,7 @@ Status reflects work actually completed in this repository, not estimates.
 4. Validate captures and preserve originals/checksums.
 5. Evaluate same-room positive controls and visually similar different-room negative controls.
 6. Run dataset audit and preserve its split manifest with the dataset version.
-7. Evaluate fingerprint thresholds only on independent, verified ground-truth captures; do not tune against the evaluation split.
+7. Add human-reviewed room annotations with evidence notes.\n8. Calibrate on the calibration split and evaluate once on the independent holdout split; do not tune against evaluation results.
 
 ## Earlier analysis sequence
 
