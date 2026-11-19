@@ -44,7 +44,7 @@ class GroundTruthEvaluatorTests(unittest.TestCase):
 
     def test_requires_both_calibration_classes(self):
         with tempfile.TemporaryDirectory() as td:
-            root=Path(td);anns=self.annotations(list("ABC"))
+            root=Path(td);anns=self.annotations(list("ABC"));anns[2]["room_id"]="room-1"
             f=self.files(root,anns,[pair("A","B",.9),pair("A","C",.8),pair("B","C",.7)])
             r=evaluate_dataset(*f)
             self.assertEqual(r["status"],"calibration_needs_both_classes")
