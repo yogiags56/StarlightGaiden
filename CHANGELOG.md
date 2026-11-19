@@ -33,3 +33,11 @@
 - Added pairwise fingerprint trials grouped by tester-entered location labels.
 - Added synthetic tests for valid captures, checksum mismatch and path traversal.
 - Real-game captures and ground-truth validation remain pending.
+
+## Unreleased — RGM-001E.7 Multi-Signal Scene Correlation
+
+- Added pairwise correlation across both rendered tilemaps, WRAM/HRAM/IO/OAM deltas, ROM/WRAM banks, PC, LCD/camera registers, active sprites and music-track hint.
+- Parses the actual upstream state_dump.c text-summary layout.
+- Reads the music-track hint from WRAM offset 0x0E8C, matching the inspected upstream helper.
+- Emits candidate/weak/insufficient evidence only; no room, scene, active-character or speaker identity is assigned.
+- Added synthetic tests for summary parsing and pairwise correlation; real-game calibration remains pending.
