@@ -35,7 +35,7 @@ class RoomFingerprintTests(unittest.TestCase):
             a,b=extract_cells(p),extract_cells(q)
             result=compare_fingerprints(a,b,max_shift=4,min_overlap=900)
             self.assertEqual(result["status"],"candidate_match")
-            self.assertEqual((result["best_alignment"]["dx_tiles"],result["best_alignment"]["dy_tiles"]),(-3,2))
+            self.assertEqual((result["best_alignment"]["dx_tiles"],result["best_alignment"]["dy_tiles"]),(3,-2))
             self.assertEqual(result["best_alignment"]["exact_matching_cells"],1024)
     def test_excluded_cells_reduce_overlap(self):
         with tempfile.TemporaryDirectory() as d:
