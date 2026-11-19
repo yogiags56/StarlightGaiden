@@ -64,3 +64,26 @@ The build includes the guarded RGM adapter, Android JNI CMake registration, touc
 ## Next gate
 
 Open the runtime menu/Diagnostics, request one RGM bundle capture while the game is in the visible Starlight scene, then share the generated bundle (or its files). Verify the .bin, .txt, graphics PNGs, metadata and SHA-256 values before classifying the room or calibrating fingerprints.
+
+
+## RGM-001E.23 — Android public Downloads export CI
+
+**Commit:** `035ef98ffff001e2eca131af51a13585fdb8e0ca`
+
+- Python analysis workflow #412: passed.
+- Upstream integration workflow #47: Android ARM64 and desktop jobs passed.
+- Android artifact: [workflow run #47](https://github.com/yogiags56/StarlightGaiden/actions/runs/44609904228), artifact `starlightgaiden-android-arm64-debug`, ID `14572518575`.
+- Artifact ZIP size: 28,696,771 bytes.
+- Extracted APK: 73,409,428 bytes.
+- Extracted APK SHA-256: `e0805db8691dd18ed46cfbe1b25e4e2181d1a79d3dfd82d6ef35cc07ac8fe086`.
+- APK archive inspection confirmed `lib/arm64-v8a/libmain.so`, `lib/arm64-v8a/libSDL2.so` and `AndroidManifest.xml`.
+
+### Export implementation included in this build
+- Native capture completion invokes the Android Java bridge.
+- Java packages the capture directory recursively as a ZIP in app cache.
+- Android 10+ publishes the ZIP to `Downloads/StarlightGaiden` via MediaStore.
+- Older Android versions use the Storage Access Framework document picker.
+- Copy length is checked and SHA-256 is logged.
+
+### Validation boundary
+CI confirms source integration and APK packaging only. The new export flow has **not** yet been exercised on a physical device. A real exported ZIP must be checked for non-empty contents and valid snapshot/PNG files before this milestone is considered device-verified.
