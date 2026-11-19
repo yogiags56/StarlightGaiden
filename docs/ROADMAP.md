@@ -19,6 +19,7 @@ Status reflects work actually completed in this repository, not estimates.
 | RGM-001E.10 | Real Gameplay Capture Ingestion | Canonical folder layout and strict metadata/integrity validation implemented; real captures still outstanding |
 | RGM-001E.11 | Dataset Audit & Ground-Truth Evaluation | Deterministic session-grouped split planner, exact duplicate audit and quarantine rules implemented; real labels/captures still outstanding |
 | RGM-001E.12 | Verified Ground-Truth Evaluation | Human-verified annotation schema, calibration-only threshold selection and holdout evaluator implemented; real evaluation pending |
+| RGM-001E.13 | Real Gameplay Dataset Collection | Collection status auditor and capture workflow documented; waiting for actual paired gameplay dumps |
 | RGM-002 | Upstream build and compatibility | Not started |
 | RGM-003 | Gameplay verification | Not started |
 | RGM-004 | Asset pipeline | Not started |
@@ -31,6 +32,7 @@ Status reflects work actually completed in this repository, not estimates.
 ## Immediate sequence
 
 1. Generate a session plan with `python tools/rgm_experiment_plan.py --output dataset/SESSION-0001 --session-id SESSION-0001`.
+2. Record collection progress with `python tools/rgm_collection_status.py dataset/SESSION-0001 --output collection_status.json`.
 2. Populate generated FP capture folders with actual paired dumps; run the capture validator.
 3. Execute reachable experiments in `docs/analysis/RGM-001E.9-EXPERIMENT-MATRIX.json` and capture paired state/graphics dumps.
 4. Validate captures and preserve originals/checksums.
