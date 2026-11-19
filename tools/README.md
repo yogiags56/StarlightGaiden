@@ -13,3 +13,13 @@ Run all tests from the repository root:
 ```bash
 python -m unittest discover -s tests -v
 ```
+
+## Room Fingerprint Engine
+
+See [ROOM-FINGERPRINT.md](ROOM-FINGERPRINT.md) for the experimental 32×32 tilemap fingerprint and camera/ring-buffer offset matcher.
+
+Run its tests with:
+
+```bash
+python -m unittest tests.test_room_fingerprint -v
+```
