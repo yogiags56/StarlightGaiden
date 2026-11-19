@@ -1,6 +1,13 @@
 name: Android ARM64 build
 
 on:
+  push:
+    branches:
+      - work/rgm-001e3-bootstrap
+    paths:
+      - '.github/workflows/android-arm64.yml'
+      - 'integration/regaiden-recomp/**'
+      - 'tests/test_upstream_integration.py'
   workflow_dispatch:
 
 permissions:
