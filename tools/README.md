@@ -31,3 +31,11 @@ See [REAL-CAPTURE-VALIDATION.md](REAL-CAPTURE-VALIDATION.md) for paired capture 
 ```bash
 python tools/rgm_capture_validator.py dataset/ --output dataset_validation.json
 ```
+
+## Multi-Signal Scene Correlation
+
+See [MULTI-SIGNAL-CORRELATION.md](MULTI-SIGNAL-CORRELATION.md) for map, memory, runtime, camera, sprite and audio evidence correlation.
+
+```bash
+python tools/rgm_scene_correlator.py dataset/ --output scene_correlation.json
+```
