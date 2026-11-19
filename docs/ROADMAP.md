@@ -23,6 +23,7 @@ Status reflects work actually completed in this repository, not estimates.
 | RGM-001E.14 | Real Capture Ingestion & Quality Review | Read-only plan identity, artifact/checksum coverage and unexpected-folder reviewer implemented; waiting for real dumps |
 | RGM-001E.15 | Capture Synchronization & Temporal Consistency | Timing/frame evidence auditor and synthetic tests implemented; runtime instrumentation and real paired captures pending |
 | RGM-001E.15 | Capture Synchronization & Temporal Consistency | Timing/frame evidence auditor and synthetic tests implemented; runtime instrumentation and real paired captures still pending |
+| RGM-001E.16 | Runtime Capture Bundle Adapter | Staged C++ adapter, checksum finalizer and integration instructions; upstream wiring/build/runtime verification pending |
 | RGM-002 | Upstream build and compatibility | Not started |
 | RGM-003 | Gameplay verification | Not started |
 | RGM-004 | Asset pipeline | Not started |
@@ -38,6 +39,7 @@ Status reflects work actually completed in this repository, not estimates.
 2. Record collection progress with `python tools/rgm_collection_status.py dataset/SESSION-0001 --output collection_status.json`.
 3. Run strict plan/provenance review with `python tools/rgm_ingestion_review.py dataset/SESSION-0001 --output ingestion_review.json`.
 4. Assess dump timing/frame evidence with `python tools/rgm_temporal_consistency.py dataset/SESSION-0001 --output temporal_review.json`.
+5. When the upstream adapter is integrated and built, capture paired dumps on the emulation thread after frame completion; finalize with `python tools/rgm_capture_finalize.py dataset/SESSION-0001/FP-<capture-id>`.
 4. Assess dump timing/frame evidence with `python tools/rgm_temporal_consistency.py dataset/SESSION-0001 --output temporal_review.json`.
 2. Populate generated FP capture folders with actual paired dumps; run the capture validator.
 3. Execute reachable experiments in `docs/analysis/RGM-001E.9-EXPERIMENT-MATRIX.json` and capture paired state/graphics dumps.
