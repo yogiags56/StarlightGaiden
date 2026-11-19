@@ -87,7 +87,8 @@ def main() -> int:
         '    const char* rgm_character = NULL;\n'
         '    const char* rgm_speaker = NULL;\n'
         '    unsigned rgm_repeat = 1;\n'
-        '    bool rgm_capture_pending = false;\n',
+        '    bool rgm_capture_pending = false;\n'
+        '    bool rgm_android_auto_capture_path = false;\n',
         "RGM CLI variables")
     main_text = replace_once(
         main_text,
@@ -153,6 +154,7 @@ def main() -> int:
         '                    snprintf(rgm_android_capture_dir, sizeof(rgm_android_capture_dir), "%s/snapshots/rgm/%s/FP-%s", rgm_external, rgm_session, rgm_android_capture_id);\n'
         '                    rgm_capture_id = rgm_android_capture_id;\n'
         '                    rgm_capture_dir = rgm_android_capture_dir;\n'
+        '                    rgm_android_auto_capture_path = true;\n'
         '                }\n'
         '#endif\n'
         '                if (rgm_capture_dir && rgm_session && rgm_experiment && rgm_checkpoint && rgm_location && rgm_activity) {\n'
@@ -167,6 +169,13 @@ def main() -> int:
         '                const bool rgm_ok = rgm_capture_bundle(ctx, rgm_capture_dir, rgm_session, rgm_capture_id, rgm_experiment, rgm_checkpoint, rgm_repeat, rgm_location, rgm_activity, rgm_character, rgm_speaker, rgm_status, sizeof(rgm_status));\n'
         '                fprintf(stderr, "[RGM] %s\\n", rgm_status[0] ? rgm_status : (rgm_ok ? "capture complete" : "capture failed"));\n'
         '                rgm_capture_pending = false;\n'
+        '#ifdef __ANDROID__\n'
+        '                if (rgm_android_auto_capture_path) {\n'
+        '                    rgm_capture_dir = NULL;\n'
+        '                    rgm_capture_id = NULL;\n'
+        '                    rgm_android_auto_capture_path = false;\n'
+        '                }\n'
+        '#endif\n'
         '            }\n'
         '            const uint32_t* fb = gb_get_framebuffer(ctx);\n',
         "post-frame capture hook")
