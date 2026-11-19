@@ -8,11 +8,18 @@
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
+#include <utility>
 #include <sstream>
 #include <string>
 
 namespace fs = std::filesystem;
 using Clock = std::chrono::steady_clock;
+
+struct StateDumpOutputDirGuard {
+    std::string previous;
+    StateDumpOutputDirGuard() : previous(state_dump_output_dir()) {}
+    ~StateDumpOutputDirGuard() { state_dump_set_output_dir(previous.c_str()); }
+};
 
 static uint64_t rgm_now_ns() {
     return static_cast<uint64_t>(
@@ -173,7 +180,11 @@ extern "C" bool rgm_capture_bundle(
     if (ec || !fs::is_directory(root)) {
         return fail("RGM capture failed: cannot create capture directory");
     }
+    if (fs::directory_iterator(root, ec) != fs::directory_iterator() || ec) {
+        return fail("RGM capture failed: capture directory must be empty and unique");
+    }
 
+    StateDumpOutputDirGuard output_dir_guard;
     const int state_index = state_dump_count() + 1;
     char state_name[40], summary_name[40];
     std::snprintf(state_name, sizeof(state_name), "state_%02d.bin", state_index);
