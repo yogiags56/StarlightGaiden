@@ -80,4 +80,5 @@
 - Added independent holdout evaluation with confusion counts and standard classification metrics.
 - Cross-split and unverified-label pairs are excluded; calibration requires both same-room and different-room examples.
 - Added synthetic tests for calibration/holdout separation, unverified annotations, missing classes and annotation provenance.
+- Corrected the single-class calibration fixture to exercise the intended insufficient-class guard.
 - No real-game labels or performance results are claimed.
