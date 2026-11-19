@@ -50,6 +50,7 @@ class UpstreamIntegrationTests(unittest.TestCase):
         (platform_include / "platform_sdl.h").write_text(
             "bool gb_platform_poll_events(GBContext* ctx);\n")
         (platform_source / "platform_sdl.cpp").write_text(
+            "static GBContext* g_registered_ctx = NULL;\n"
             "static bool handle_runtime_event(const SDL_Event* event, GBContext* ctx) {\n"
             "    switch (event->type) {\n"
             "        case SDL_KEYDOWN:\n"
