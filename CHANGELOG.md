@@ -137,3 +137,12 @@
 - Smoke tests verify metadata on same-frame and frame-mismatch captures, restoration of the state-dump output directory, and invalid capture-directory rejection.
 - GitHub Actions run #303 passed: 56 Python tests and the C++ adapter smoke test.
 - This is not a full upstream CMake build or a real emulator/ROM capture; those remain outstanding.
+
+## Unreleased — RGM-001E.18 Full Upstream Desktop Build
+
+- Added a GitHub Actions workflow that checks out the audited upstream commit, applies the guarded integration, configures the actual upstream desktop CMake project, compiles the complete executable and verifies the output artifact.
+- First workflow attempt exposed a malformed upstream submodule entry; disabled unused recursive submodule initialization for this build.
+- Full desktop CMake configure and compile succeeded in GitHub Actions run #2; executable artifact verification passed.
+- Added a no-ROM process startup test for normal startup and the opt-in RGM CLI path. It verifies expected ROM validation failure and confirms no capture directory is created before a guest frame is available.
+- The new startup smoke test is awaiting its first CI result.
+- No valid ROM was loaded; no interactive gameplay, real capture bundle, checksum validation of real game data, or Android build has been performed.
