@@ -1,6 +1,6 @@
 import hashlib,json,shutil,tempfile,unittest
 from pathlib import Path
-from tools.rgm_dataset_audit import audit_dataset
+from tools.rgm_dataset_audit import audit_dataset, DatasetAuditError
 from test_capture_validator import capture
 
 def make_capture(root,session,cid,label,variation):
@@ -60,6 +60,6 @@ class DatasetAuditTests(unittest.TestCase):
 
     def test_invalid_split_ratios_rejected(self):
         with tempfile.TemporaryDirectory() as td:
-            with self.assertRaises(ValueError):audit_dataset(Path(td),ratios={"train":0.5,"calibration":0.5,"evaluation":0.5})
+            with self.assertRaises(DatasetAuditError):audit_dataset(Path(td),ratios={"train":0.5,"calibration":0.5,"evaluation":0.5})
 
 if __name__=="__main__":unittest.main()
