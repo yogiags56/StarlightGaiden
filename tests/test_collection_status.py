@@ -2,7 +2,7 @@ import json,shutil,tempfile,unittest
 from pathlib import Path
 from tools.rgm_collection_status import audit_session,CollectionError
 from tools.rgm_experiment_plan import generate
-from tests.test_capture_validator import capture
+from test_capture_validator import capture
 
 def matrix():
  return {"schema_version":1,"milestone":"RGM-001E.9","project":"Test","upstream":{"repository":"x","commit":"abc"},
