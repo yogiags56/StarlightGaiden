@@ -109,3 +109,13 @@
 - Added repeated-checkpoint timing summaries without comparing frame numbers across separate repeats.
 - Added synthetic tests for matched/mismatched frames, large gaps, missing evidence, invalid intervals and clock metadata.
 - No runtime frame instrumentation or real synchronized game captures are claimed.
+
+## Unreleased — RGM-001E.16 Runtime Capture Bundle Adapter
+
+- Added a staged C++ adapter to invoke the existing upstream state and graphics dump APIs on the emulation thread.
+- Added monotonic host timestamps and stable completed-frame epoch sampling before/after each dump.
+- Added metadata with session/experiment/checkpoint/repeat identity and observed labels.
+- Added SHA-256 finalizer for state, summary and graphics artifacts, with required image checks and path/symlink safeguards.
+- Temporal auditor now consumes explicit runtime frame-stability flags.
+- Added synthetic tests for checksum finalization, missing graphics, path traversal, symlinks and unstable frame evidence.
+- Adapter is not yet wired into or compiled against upstream; no real game capture is claimed.
