@@ -11,7 +11,7 @@ Status reflects work actually completed in this repository, not estimates.
 | RGM-001E.2 | Snapshot dataset and capture protocol | Protocol drafted; no actual game dataset collected |
 | RGM-001E.3 | Snapshot Analyzer | Integrated; synthetic tests pass |
 | RGM-001E.4 | Graphics and tilemap comparator | Implemented; CI passes; awaiting real game captures |
-| RGM-001E.5 | Room Fingerprint Engine | Implemented as experimental candidate matcher; synthetic tests pass; not calibrated on real captures |
+| RGM-001E.5 | Room Fingerprint Engine | Experimental candidate matcher implemented; synthetic tests pass; not calibrated on real captures |
 | RGM-002 | Upstream build and compatibility | Not started |
 | RGM-003 | Gameplay verification | Not started |
 | RGM-004 | Asset pipeline | Not started |
@@ -26,5 +26,5 @@ Status reflects work actually completed in this repository, not estimates.
 1. Capture paired memory and graphics snapshots from the same game state.
 2. Establish repeatability for stationary, camera-scroll, animation and palette variation.
 3. Evaluate false positives with negative-control rooms.
-4. Calibrate overlap and similarity thresholds on a labeled dataset.
+4. Calibrate overlap, diversity and similarity thresholds on a labeled dataset.
 5. Only then design scene-state and active-character classification.
