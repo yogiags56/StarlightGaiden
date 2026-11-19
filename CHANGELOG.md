@@ -127,3 +127,13 @@
 - Added CLI metadata arguments and operator-supplied scene labels; ordinary gameplay remains unaffected when the trigger is not supplied.
 - Added Python syntax validation for the integration script and documented desktop build / one-shot capture commands.
 - No local upstream checkout, CMake build, Android build or real capture was executed; these remain mandatory verification gates.
+
+## Unreleased — RGM-001E.18 Desktop Adapter Smoke Verification
+
+- Fixed the capture adapter header to be safe for inclusion from the upstream C main translation unit.
+- Hardened the upstream integration script to validate all anchors before modifying files and refuse overwriting existing adapter files.
+- Added temporary-Git-fixture tests for successful patching, idempotence, wrong-commit refusal and missing-anchor no-partial-modification behavior.
+- Added a C++20 smoke harness that compiles the actual adapter source with warnings-as-errors against stubbed upstream dump APIs.
+- Smoke tests verify metadata on same-frame and frame-mismatch captures, restoration of the state-dump output directory, and invalid capture-directory rejection.
+- GitHub Actions run #303 passed: 56 Python tests and the C++ adapter smoke test.
+- This is not a full upstream CMake build or a real emulator/ROM capture; those remain outstanding.
