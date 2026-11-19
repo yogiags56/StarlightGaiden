@@ -119,3 +119,11 @@
 - Temporal auditor now consumes explicit runtime frame-stability flags.
 - Added synthetic tests for checksum finalization, missing graphics, path traversal, symlinks and unstable frame evidence.
 - Adapter is not yet wired into or compiled against upstream; no real game capture is claimed.
+
+## Unreleased — RGM-001E.17 Guarded Upstream Integration
+
+- Added a guarded integration script pinned to upstream commit e5befd20e67939d939319149d1c1177b8e6c5cd6.
+- Script copies the adapter into the upstream runtime, adds it to the gbrt CMake library and inserts an opt-in one-shot CLI capture hook after guest-frame completion.
+- Added CLI metadata arguments and operator-supplied scene labels; ordinary gameplay remains unaffected when the trigger is not supplied.
+- Added Python syntax validation for the integration script and documented desktop build / one-shot capture commands.
+- No local upstream checkout, CMake build, Android build or real capture was executed; these remain mandatory verification gates.
