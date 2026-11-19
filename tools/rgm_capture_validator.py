@@ -40,8 +40,6 @@ def inspect_capture(directory: Path) -> dict[str,Any]:
         if directory.name != "FP-"+m["capture_id"]: errors.append("capture_id does not match FP directory name")
     if directory.parent.name.startswith("SESSION-") and m.get("session_id") != directory.parent.name:
         errors.append("session_id does not match parent session directory")
-    if isinstance(m.get("capture_id"),str) and not m["capture_id"].startswith("EXP-"):
-        errors.append("capture_id must preserve experiment identifier")
     observed=m.get("observed") if isinstance(m.get("observed"),dict) else {}
     for k in ("location_label","activity"):
         if not isinstance(observed.get(k),str) or not observed[k]: errors.append(f"observed.{k} missing")
