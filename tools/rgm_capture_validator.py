@@ -111,7 +111,7 @@ def main():
     a=p.parse_args()
     try:
         report=run_dataset(a.dataset,a.max_shift,a.min_overlap); payload=json.dumps(report,indent=2,ensure_ascii=False)
-        if a.output: a.output.write_text(payload+"\\n",encoding="utf-8"); print(f"Report written: {a.output}")
+        if a.output: a.output.write_text(payload+"\n",encoding="utf-8"); print(f"Report written: {a.output}")
         else: print(payload)
         return 1 if report["summary"]["captures_invalid"] else 0
     except (OSError,ValueError,CaptureValidationError) as e: print(f"ERROR: {e}",file=sys.stderr); return 2
