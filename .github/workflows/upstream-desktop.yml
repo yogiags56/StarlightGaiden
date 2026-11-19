@@ -1,0 +1,51 @@
+name: Upstream desktop integration
+
+on:
+  pull_request:
+    paths:
+      - "integration/regaiden-recomp/**"
+      - "docs/analysis/RGM-001E.16-RUNTIME-CAPTURE-ADAPTER.md"
+      - ".github/workflows/upstream-desktop.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  desktop-build:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - name: Check out StarlightGaiden
+        uses: actions/checkout@v4
+
+      - name: Check out audited upstream source
+        uses: actions/checkout@v4
+        with:
+          repository: sergiomanzur/regaiden-recomp
+          ref: e5befd20e67939d939319149d1c1177b8e6c5cd6
+          path: regaiden-recomp
+          submodules: recursive
+
+      - name: Install desktop build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential cmake ninja-build libsdl2-dev
+
+      - name: Apply guarded RGM integration
+        run: python integration/regaiden-recomp/apply_rgm_adapter.py regaiden-recomp
+
+      - name: Configure desktop target
+        run: |
+          cmake -S regaiden-recomp/src/recompiled -B regaiden-recomp/build \
+            -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DGBRECOMP_GENERATED_COMPILE_JOBS=2
+
+      - name: Build upstream desktop executable
+        run: cmake --build regaiden-recomp/build --parallel 2
+
+      - name: Verify executable artifact
+        run: |
+          test -x regaiden-recomp/build/Resident_Evil_Gaiden__USA_
+          file regaiden-recomp/build/Resident_Evil_Gaiden__USA_
