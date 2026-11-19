@@ -1,6 +1,7 @@
 #include "rgm_capture_bundle.h"
 #include "state_dump.h"
 #include <cassert>
+#include <cstdio>
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>
