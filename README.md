@@ -46,6 +46,7 @@ See:
 - [Temporal Consistency Protocol](docs/analysis/RGM-001E.15-TEMPORAL-CONSISTENCY.md)
 - [Runtime Capture Bundle Adapter](docs/analysis/RGM-001E.16-RUNTIME-CAPTURE-ADAPTER.md)
 - [Runtime Capture Bundle Source](integration/regaiden-recomp/rgm_capture_bundle.cpp)
+- [Guarded Upstream Integration Script](integration/regaiden-recomp/apply_rgm_adapter.py)
 - [Capture SHA-256 Finalizer](tools/rgm_capture_finalize.py)
 
 ## Legal and asset policy
