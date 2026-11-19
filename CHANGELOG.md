@@ -146,3 +146,13 @@
 - Added a no-ROM process startup test for normal startup and the opt-in RGM CLI path. It verifies expected ROM validation failure and confirms no capture directory is created before a guest frame is available.
 - The new startup smoke test is awaiting its first CI result.
 - No valid ROM was loaded; no interactive gameplay, real capture bundle, checksum validation of real game data, or Android build has been performed.
+
+## Unreleased — RGM-001E.19 Operator-Triggered Capture
+
+- Replaced first-frame automatic capture scheduling with an explicit SDL F8 request.
+- Added a host-side one-shot request flag and a platform API to consume it from the emulation thread.
+- The main loop now consumes F8 after a guest frame completes and before framebuffer presentation; capture remains disabled unless metadata CLI options are supplied and the operator presses F8.
+- Preserved the existing F4 guest snapshot shortcut.
+- Updated integration fixtures to include the SDL platform header/source and verify the F8 hook.
+- Updated integration guide and roadmap. Python analysis CI passed after correcting newline escapes in the synthetic SDL fixture.
+- Full upstream desktop build for the manual-F8 revision is running; no real ROM or gameplay capture has been performed.
