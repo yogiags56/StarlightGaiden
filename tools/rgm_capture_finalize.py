@@ -32,8 +32,10 @@ def finalize_capture(folder:Path)->dict:
   if folder not in p.parents:raise FinalizeError(f"path escapes capture folder: {rel}")
   if not p.is_file():raise FinalizeError(f"required state artifact missing: {rel}")
   files[p.relative_to(folder).as_posix()]=p
- graphics=(folder/gd).resolve()
- if folder not in graphics.parents or not graphics.is_dir() or graphics.is_symlink():
+ graphics_raw=folder/gd
+ if graphics_raw.is_symlink():raise FinalizeError("graphics directory is a symlink")
+ graphics=graphics_raw.resolve()
+ if folder not in graphics.parents or not graphics.is_dir():
   raise FinalizeError("graphics directory missing, unsafe or symlink")
  for p in sorted(graphics.rglob("*")):
   if p.is_symlink():raise FinalizeError(f"symlink in graphics directory: {p.relative_to(folder)}")
