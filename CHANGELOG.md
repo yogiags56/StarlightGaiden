@@ -156,3 +156,10 @@
 - Updated integration fixtures to include the SDL platform header/source and verify the F8 hook.
 - Updated integration guide and roadmap. Python analysis CI passed after correcting newline escapes in the synthetic SDL fixture.
 - Full upstream desktop build for the manual-F8 revision is running; no real ROM or gameplay capture has been performed.
+
+## Unreleased — Manual F8 Desktop Build and Cross-Tool Handoff
+
+- Manual-F8 revision passed GitHub Actions desktop workflow #10: guarded upstream integration, CMake configuration, full executable build, artifact verification, normal startup and opt-in CLI smoke tests all succeeded.
+- Added a cross-tool CI gate: retain the synthetic bundle emitted by the C++ adapter smoke executable and run the production Python SHA-256 finalizer over it.
+- This validates the adapter-to-finalizer handoff using synthetic fixture data only; it does not validate a real game capture or the semantic correctness of fabricated PNG/state fixture contents.
+- Cross-tool handoff CI is newly added and awaits its run.
