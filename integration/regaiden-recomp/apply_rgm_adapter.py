@@ -40,10 +40,9 @@ def main() -> int:
     if MARKER in main_text or MARKER in cmake_text:
         raise RuntimeError("RGM adapter integration marker already exists; refusing duplicate patch")
     adapter_dir = upstream / "src/recompiled"
-    shutil.copy2(here / "integration/regaiden-recomp/rgm_capture_bundle.h",
-                 adapter_dir / "rgm_capture_bundle.h")
-    shutil.copy2(here / "integration/regaiden-recomp/rgm_capture_bundle.cpp",
-                 adapter_dir / "rgm_capture_bundle.cpp")
+    if ((adapter_dir / "rgm_capture_bundle.h").exists() or
+            (adapter_dir / "rgm_capture_bundle.cpp").exists()):
+        raise RuntimeError("adapter destination already exists; refusing to overwrite local files")
 
     cmake_text = replace_once(
         cmake_text,
@@ -123,6 +122,11 @@ def main() -> int:
         '            }\n'
         '            const uint32_t* fb = gb_get_framebuffer(ctx);\n',
         "post-frame capture hook")
+    # All textual anchors are validated before any upstream file is modified.
+    shutil.copy2(here / "integration/regaiden-recomp/rgm_capture_bundle.h",
+                 adapter_dir / "rgm_capture_bundle.h")
+    shutil.copy2(here / "integration/regaiden-recomp/rgm_capture_bundle.cpp",
+                 adapter_dir / "rgm_capture_bundle.cpp")
     cmake_path.write_text(cmake_text)
     main_path.write_text(main_text)
     print("Applied RGM capture adapter integration.")
