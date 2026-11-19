@@ -8,7 +8,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ANALYZER = ROOT / "tools" / "rgm_snapshot_analyzer.py"
-MAGIC = b"REGAIDEN-SNAPSHOT-1\\0"
+MAGIC = b"REGAIDEN-SNAPSHOT-1\0"
 SIZES = (0x8000, 0x7F, 0x80, 0xA0)
 
 
