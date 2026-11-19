@@ -36,8 +36,13 @@ def main() -> int:
     if head != UPSTREAM_COMMIT and not args.force_commit:
         raise RuntimeError(f"expected upstream {UPSTREAM_COMMIT}, found {head}; review source before --force-commit")
     main_path, cmake_path = upstream / MAIN, upstream / CMAKE
+    platform_header_path = upstream / "src/recompiled/runtime/include/platform_sdl.h"
+    platform_cpp_path = upstream / "src/recompiled/runtime/src/platform_sdl.cpp"
     main_text, cmake_text = main_path.read_text(), cmake_path.read_text()
-    if MARKER in main_text or MARKER in cmake_text:
+    platform_header_text = platform_header_path.read_text()
+    platform_cpp_text = platform_cpp_path.read_text()
+    if any(MARKER in value for value in
+           (main_text, cmake_text, platform_header_text, platform_cpp_text)):
         raise RuntimeError("RGM adapter integration marker already exists; refusing duplicate patch")
     adapter_dir = upstream / "src/recompiled"
     if ((adapter_dir / "rgm_capture_bundle.h").exists() or
@@ -106,7 +111,6 @@ def main() -> int:
         '        if (!rgm_session || !rgm_capture_id || !rgm_experiment || !rgm_checkpoint || !rgm_location || !rgm_activity) {\n'
         '            fprintf(stderr, "RGM capture requires --rgm-session, --rgm-capture-id, --rgm-experiment, --rgm-checkpoint, --rgm-location and --rgm-activity\\n"); return 1;\n'
         '        }\n'
-        '        rgm_capture_pending = true;\n'
         '    }\n'
         '    if (!rom_loader_acquire_rom(explicit_rom_path)) {\n',
         "RGM CLI validation")
@@ -114,6 +118,10 @@ def main() -> int:
         main_text,
         '            gbrt_port_render(ctx, 1280, 720);\n#endif\n            const uint32_t* fb = gb_get_framebuffer(ctx);\n',
         '            gbrt_port_render(ctx, 1280, 720);\n#endif\n'
+        '            if (rgm_capture_dir && gb_platform_consume_rgm_capture_request()) {\n'
+        '                rgm_capture_pending = true;\n'
+        '                fprintf(stderr, "[RGM] F8 capture requested at completed frame %llu\\n", frame_index);\n'
+        '            }\n'
         '            if (rgm_capture_pending) {\n'
         '                char rgm_status[512] = {};\n'
         '                const bool rgm_ok = rgm_capture_bundle(ctx, rgm_capture_dir, rgm_session, rgm_capture_id, rgm_experiment, rgm_checkpoint, rgm_repeat, rgm_location, rgm_activity, rgm_character, rgm_speaker, rgm_status, sizeof(rgm_status));\n'
@@ -122,6 +130,41 @@ def main() -> int:
         '            }\n'
         '            const uint32_t* fb = gb_get_framebuffer(ctx);\n',
         "post-frame capture hook")
+
+    platform_header_text = replace_once(
+        platform_header_text,
+        "bool gb_platform_poll_events(GBContext* ctx);\n",
+        "bool gb_platform_poll_events(GBContext* ctx);\n"
+        "/* Consume one operator F8 request after a completed guest frame. */\n"
+        "bool gb_platform_consume_rgm_capture_request(void); // " + MARKER + "\n",
+        "SDL platform header API")
+    platform_cpp_text = replace_once(
+        platform_cpp_text,
+        "static bool handle_runtime_event(const SDL_Event* event, GBContext* ctx) {",
+        "static bool g_rgm_capture_requested = false; // " + MARKER + "\n\n"
+        "static bool handle_runtime_event(const SDL_Event* event, GBContext* ctx) {",
+        "SDL event state")
+    platform_cpp_text = replace_once(
+        platform_cpp_text,
+        "                case SDL_SCANCODE_F4:\n",
+        "                case SDL_SCANCODE_F8:\n"
+        "                    if (pressed && event->key.repeat == 0) {\n"
+        "                        g_rgm_capture_requested = true;\n"
+        "                    }\n"
+        "                    return true;\n\n"
+        "                case SDL_SCANCODE_F4:\n",
+        "SDL F8 capture shortcut")
+    if "bool gb_platform_consume_rgm_capture_request(void)" in platform_cpp_text:
+        raise RuntimeError("SDL capture request consumer already exists")
+    platform_cpp_text += (
+        "\n\n/* " + MARKER + " */\n"
+        "bool gb_platform_consume_rgm_capture_request(void) {\n"
+        "    const bool requested = g_rgm_capture_requested;\n"
+        "    g_rgm_capture_requested = false;\n"
+        "    return requested;\n"
+        "}\n"
+    )
+
     # All textual anchors are validated before any upstream file is modified.
     shutil.copy2(here / "integration/regaiden-recomp/rgm_capture_bundle.h",
                  adapter_dir / "rgm_capture_bundle.h")
@@ -129,9 +172,11 @@ def main() -> int:
                  adapter_dir / "rgm_capture_bundle.cpp")
     cmake_path.write_text(cmake_text)
     main_path.write_text(main_text)
+    platform_header_path.write_text(platform_header_text)
+    platform_cpp_path.write_text(platform_cpp_text)
     print("Applied RGM capture adapter integration.")
     print(f"Upstream commit: {head}")
-    print("Next: configure/build desktop; then run with --rgm-capture-* options.")
+    print("Run with --rgm-capture-* metadata options, then press F8 at the desired scene.")
     return 0
 
 if __name__ == "__main__":
