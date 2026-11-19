@@ -7,6 +7,7 @@ from pathlib import Path
 SCRIPT = Path(__file__).resolve().parents[1] / "integration/regaiden-recomp/apply_rgm_adapter.py"
 
 MAIN = """#include "audio_stats.h"
+#include <string.h>
 int main(int argc, char** argv) {
     const char* state_dump_file = NULL;
     for (int i = 1; i < argc; ++i) {
