@@ -106,3 +106,12 @@ See [Temporal Consistency Protocol](../docs/analysis/RGM-001E.15-TEMPORAL-CONSIS
 python tools/rgm_temporal_consistency.py dataset/SESSION-0001 --max-gap-ms 250 --output dataset/SESSION-0001/temporal_review.json
 ```
 Requires optional monotonic timing metadata and, for a full pass, matching trusted game-frame markers. Timestamp proximity alone is not treated as proof of same-state capture.
+
+## RGM-001E.15 Temporal Consistency
+
+See [Temporal Consistency Protocol](../docs/analysis/RGM-001E.15-TEMPORAL-CONSISTENCY.md).
+
+```bash
+python tools/rgm_temporal_consistency.py dataset/SESSION-0001 --max-gap-ms 250 --output dataset/SESSION-0001/temporal_review.json
+```
+Requires monotonic-clock timing metadata and, for a full pass, matching trusted game-frame markers. Timestamp proximity alone is not proof of a frozen game state.
