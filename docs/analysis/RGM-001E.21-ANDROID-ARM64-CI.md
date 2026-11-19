@@ -45,14 +45,22 @@ This verifies package structure and ARM64 native libraries, not successful insta
 
 The build includes the guarded RGM adapter, Android JNI CMake registration, touch-menu capture request and app-specific external-storage destination. Session and capture identifiers are generated to avoid collisions. Initial labels remain `unlabeled`, `unclassified`, and `unknown` until the operator verifies them.
 
-## Explicitly not verified
+## RGM-001E.22 — Physical Android Smoke Test
 
-- No physical Android device installation or launch.
-- No ROM was supplied to the CI job; no game session was run.
-- No real state/graphics capture has been collected.
-- Touch capture behavior, Android storage permissions and output contents still need device validation.
-- This is a debug APK, not a release-signed distribution build.
+**Operator report:** The user installed and launched the APK on a physical Android phone, confirmed that the ROM runs, and reported that all on-screen buttons work. A screenshot supplied on 2026-11-20 shows the game scene rendered in landscape with the character and environment visible, plus the on-screen D-pad and action buttons.
+
+### Verified by operator
+- APK installs and launches on the physical Android device.
+- A game ROM starts and renders a playable scene.
+- User reports all touch buttons function.
+
+### Still pending
+- Exact device model, Android version and APK build identity have not yet been recorded.
+- Diagnostics capture action and app-specific storage output have not yet been verified.
+- No paired real state/graphics capture bundle has been received or inspected.
+- Screenshot visibly contains a checkerboard-like pattern over large portions of the game view; its origin is unknown and must be investigated from a clean capture. Do not assume it is a game asset or transparency bug yet.
+- This remains a debug APK, not a release-signed distribution build.
 
 ## Next gate
 
-Install the APK on the user's Android phone, verify first launch and the Diagnostics/touch capture flow, then collect one legally sourced gameplay capture and validate the paired state/graphics bundle. Do not begin room-fingerprint calibration until real captures are available.
+Open the runtime menu/Diagnostics, request one RGM bundle capture while the game is in the visible Starlight scene, then share the generated bundle (or its files). Verify the .bin, .txt, graphics PNGs, metadata and SHA-256 values before classifying the room or calibrating fingerprints.
