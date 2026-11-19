@@ -49,7 +49,7 @@ def audit_session(session_dir:Path)->dict:
                     else:
                         report=inspect_capture(directory)
                         errors=report["errors"]
-                        if report["status"]=="valid":status="validated"
+                        if report["status"]=="valid" and not any("source_sha256 absent" in warning for warning in report["warnings"]):status="validated"
                         else:
                             cap=meta.get("capture",{}) if isinstance(meta.get("capture"),dict) else {}
                             try:
