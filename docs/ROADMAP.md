@@ -15,7 +15,7 @@ Status reflects work actually completed in this repository, not estimates.
 | RGM-001E.6 | Real Capture Validation Harness | Implemented; synthetic integrity/pairwise tests pass; awaiting real captures |
 | RGM-001E.7 | Multi-Signal Scene Correlation | Implemented; synthetic parser/correlation tests pass; awaiting real captures |
 | RGM-001E.8 | Scene State Classification Foundation | Implemented; synthetic evidence and unknown-fallback tests pass; awaiting real captures |
-| RGM-001E.9 | Controlled Gameplay Capture Experiments | Protocol, 11-experiment matrix and blank-plan generator implemented; awaiting actual game captures |\n| RGM-001E.10 | Real Gameplay Capture Ingestion | Canonical folder layout and strict metadata/integrity validation implemented; real captures still outstanding |
+| RGM-001E.9 | Controlled Gameplay Capture Experiments | Protocol, 11-experiment matrix and blank-plan generator implemented; awaiting actual game captures |\n| RGM-001E.10 | Real Gameplay Capture Ingestion | Canonical folder layout and strict metadata/integrity validation implemented; real captures still outstanding |\n| RGM-001E.11 | Dataset Audit & Ground-Truth Evaluation | Deterministic session-grouped split planner, exact duplicate audit and quarantine rules implemented; real labels/captures still outstanding |
 | RGM-002 | Upstream build and compatibility | Not started |
 | RGM-003 | Gameplay verification | Not started |
 | RGM-004 | Asset pipeline | Not started |
@@ -31,7 +31,7 @@ Status reflects work actually completed in this repository, not estimates.
 2. Populate generated FP capture folders with actual paired dumps; run the capture validator.\n3. Execute reachable experiments in `docs/analysis/RGM-001E.9-EXPERIMENT-MATRIX.json` and capture paired state/graphics dumps.
 4. Validate captures and preserve originals/checksums.
 5. Evaluate same-room positive controls and visually similar different-room negative controls.
-6. Calibrate thresholds only after sufficient labeled captures exist.
+6. Run dataset audit and preserve its split manifest with the dataset version.\n7. Evaluate fingerprint thresholds only on independent, verified ground-truth captures; do not tune against the evaluation split.
 
 ## Earlier analysis sequence
 
