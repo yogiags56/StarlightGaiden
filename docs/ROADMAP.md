@@ -24,7 +24,7 @@ Status reflects work actually completed in this repository, not estimates.
 | RGM-001E.15 | Capture Synchronization & Temporal Consistency | Timing/frame evidence auditor and synthetic tests implemented; runtime instrumentation and real paired captures pending |
 | RGM-001E.15 | Capture Synchronization & Temporal Consistency | Timing/frame evidence auditor and synthetic tests implemented; runtime instrumentation and real paired captures still pending |
 | RGM-001E.16 | Runtime Capture Bundle Adapter | C++ adapter, checksum finalizer and integration instructions staged |
-| RGM-001E.17 | Guarded Upstream Integration & Build Verification | Exact-commit integration script, opt-in CLI hook, transactional anchor checks and fixture tests implemented; full upstream build pending |\n| RGM-001E.18 | Desktop Adapter Smoke Verification | 56 Python tests and C++20 adapter smoke harness pass in CI; full upstream desktop build and gameplay capture pending |
+| RGM-001E.17 | Guarded Upstream Integration & Build Verification | Exact-commit integration script, opt-in CLI hook, transactional anchor checks and fixture tests implemented |\n| RGM-001E.18 | Desktop Adapter Smoke Verification | Full upstream desktop CMake build and executable verification passed in CI; no-ROM startup/CLI smoke test newly added and awaiting CI; real gameplay/capture pending |
 | RGM-002 | Upstream build and compatibility | Not started |
 | RGM-003 | Gameplay verification | Not started |
 | RGM-004 | Asset pipeline | Not started |
