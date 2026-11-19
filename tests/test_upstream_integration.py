@@ -41,7 +41,7 @@ class UpstreamIntegrationTests(unittest.TestCase):
         android_cmake.parent.mkdir(parents=True)
         android_cmake.write_text(
             "add_library(main SHARED\n"
-            "    \${RECOMPILED_DIR}/asset_dump.c\n"
+            "    ${RECOMPILED_DIR}/asset_dump.c\n"
             ")\n")
         platform_include = src / "runtime/include"
         platform_source = src / "runtime/src"
