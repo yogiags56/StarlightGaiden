@@ -10,6 +10,12 @@ except ImportError:
 
 class CollectionError(Exception):pass
 
+def _safe_child(root:Path,value:str)->Path:
+    if not isinstance(value,str) or not value:raise CollectionError("capture path must be a non-empty relative path")
+    base=root.resolve();p=(root/value).resolve()
+    if p!=base and base not in p.parents:raise CollectionError("capture path escapes its folder")
+    return p
+
 def audit_session(session_dir:Path)->dict:
     plan_path=session_dir/"session_plan.json"
     if not plan_path.is_file():raise CollectionError(f"session_plan.json missing: {session_dir}")
@@ -45,12 +51,17 @@ def audit_session(session_dir:Path)->dict:
                         errors=report["errors"]
                         if report["status"]=="valid":status="validated"
                         else:
-                            cap=meta.get("capture",{});base=directory
-                            has_state=bool(cap.get("state_file")) and (base/cap["state_file"]).is_file()
-                            has_summary=bool(cap.get("state_summary")) and (base/cap["state_summary"]).is_file()
-                            gd=base/cap.get("graphics_directory","") if isinstance(cap,dict) else ""
-                            has_graphics=bool(gd) and (base/gd).is_dir() and any((base/gd/n).is_file() for n in ("framebuffer.png","map_9800.png","map_9c00.png"))
-                            status="captured" if has_state and has_summary and has_graphics else "planned"
+                            cap=meta.get("capture",{}) if isinstance(meta.get("capture"),dict) else {}
+                            try:
+                                state_path=_safe_child(directory,cap.get("state_file"))
+                                summary_path=_safe_child(directory,cap.get("state_summary"))
+                                graphics_path=_safe_child(directory,cap.get("graphics_directory"))
+                                has_state=state_path.is_file()
+                                has_summary=summary_path.is_file()
+                                has_graphics=graphics_path.is_dir() and any((graphics_path/n).is_file() for n in ("framebuffer.png","map_9800.png","map_9c00.png"))
+                                status="captured" if has_state and has_summary and has_graphics else "planned"
+                            except CollectionError as e:
+                                status="invalid";errors.append(str(e))
             rows.append({"capture_id":cid,"experiment_id":exp.get("experiment_id"),"checkpoint":checkpoint.get("checkpoint"),
               "repeat":checkpoint.get("repeat"),"status":status,"errors":errors})
     counts={s:sum(r["status"]==s for r in rows) for s in ("planned","captured","validated","invalid")}
