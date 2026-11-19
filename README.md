@@ -16,15 +16,17 @@ The current technical candidate is [sergiomanzur/regaiden-recomp](https://github
 
 ## Development status
 
-Current milestone: **RGM-001E.3 — Snapshot Analyzer prototype**.
+Current work: **RGM-001E.4 — Graphics & Tilemap Comparator**.
 
-The analyzer currently reads the upstream `REGAIDEN-SNAPSHOT-1` binary format and compares WRAM, HRAM, IO and OAM blocks. Synthetic fixture testing is separate from tests against actual game captures; no real-game snapshot dataset or Android build is claimed yet.
+The offline Snapshot Analyzer compares WRAM, HRAM, IO and OAM snapshot blocks. The Graphics Comparator decodes upstream 8-bit RGBA PNG exports and compares framebuffer pixels, tile sheets and 32×32 tilemap cells. Synthetic tests are not game-runtime validation; no real game snapshot dataset or Android build is claimed yet.
 
 See:
 - [Roadmap](docs/ROADMAP.md)
 - [Architecture and provenance](docs/ARCHITECTURE.md)
 - [RGM-001E dataset and fingerprint protocol](docs/analysis/RGM-001E-SNAPSHOT-PROTOCOL.md)
 - [Snapshot Analyzer](tools/rgm_snapshot_analyzer.py)
+- [Graphics Comparator](tools/rgm_graphics_comparator.py)
+- [Comparator usage](tools/GRAPHICS-COMPARATOR.md)
 
 ## Legal and asset policy
 
