@@ -76,3 +76,36 @@ The finalizer hashes the state binary, state summary, and every file in the grap
 - `state_dump_set_output_dir()` and its count are process-global; serialize capture requests and do not run multiple bundles concurrently.
 - The current adapter uses `ctx->completed_frames` as a stable frame epoch, not a PPU scanline or dot counter.
 - No ROM, commercial artwork, music, or proprietary game assets are committed.
+
+## Apply the integration to a local upstream checkout
+
+From the StarlightGaiden repository root, after cloning the upstream repository at the audited commit:
+
+```bash
+python integration/regaiden-recomp/apply_rgm_adapter.py ../regaiden-recomp
+cmake -S ../regaiden-recomp -B ../regaiden-recomp/build -DCMAKE_BUILD_TYPE=Release
+cmake --build ../regaiden-recomp/build --config Release --parallel
+```
+
+The script refuses a different upstream HEAD unless `--force-commit` is explicitly supplied after manual review. It copies the adapter into `src/recompiled/`, adds the C++ file to the `gbrt` library, adds an opt-in one-shot CLI trigger, and invokes capture after a guest frame completes and after optional port rendering, before framebuffer presentation. The trigger remains inactive during ordinary gameplay.
+
+Example one-shot capture (replace labels with operator-observed values):
+
+```bash
+../regaiden-recomp/build/src/recompiled/Resident_Evil_Gaiden__USA_ \
+  --rom /path/to/legally-owned-game.gbc \
+  --rgm-capture-dir dataset/SESSION-0001/FP-EXP-01-CP-01-R01 \
+  --rgm-session SESSION-0001 \
+  --rgm-capture-id EXP-01-CP-01-R01 \
+  --rgm-experiment EXP-01 \
+  --rgm-checkpoint stationary \
+  --rgm-repeat 1 \
+  --rgm-location "Starlight corridor" \
+  --rgm-activity exploration \
+  --rgm-character Barry \
+  --rgm-speaker none
+```
+
+The CLI accepts only one capture per process invocation. A failed capture is logged and the game continues. The command-line trigger does not automatically determine room, character or speaker; those labels must be confirmed by the operator. On Android, provide an app-writable path for `--rgm-capture-dir`; do not use shared-storage paths without the appropriate platform access mechanism.
+
+The integration script has not been run against a local upstream checkout in this environment. Its addition to Python syntax CI is not a substitute for CMake compilation or runtime verification.
