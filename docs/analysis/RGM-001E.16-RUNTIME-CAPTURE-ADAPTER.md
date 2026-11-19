@@ -1,7 +1,7 @@
 # RGM-001E.16 — Runtime Capture Bundle Adapter
 
 ## Status
-Adapter source and host-side checksum finalizer are maintained in this repository. The guarded integration script has passed a full upstream desktop build and no-ROM startup/CLI smoke test before the manual-trigger revision. The manual F8 trigger revision has passed Python and C++ adapter CI; its full upstream desktop build is currently being re-run. No real game capture is claimed.
+Adapter source and host-side checksum finalizer are maintained in this repository. The guarded integration script has passed a full upstream desktop build and no-ROM startup/CLI smoke test before the manual-trigger revision. The manual F8 trigger revision has passed Python and C++ adapter CI and the full upstream desktop build plus no-ROM startup/CLI smoke test. No real game capture is claimed.
 
 ## Source files
 - `integration/regaiden-recomp/rgm_capture_bundle.h`
@@ -66,11 +66,11 @@ python tools/rgm_ingestion_review.py dataset/SESSION-0001 --output dataset/SESSI
 python tools/rgm_temporal_consistency.py dataset/SESSION-0001 --output dataset/SESSION-0001/temporal_review.json
 ```
 
-The finalizer hashes the state binary, state summary, and every file in the graphics directory. It refuses missing required graphics, path traversal and symlink artifacts. It updates only the metadata checksum map; the raw dump files remain unchanged.
+The finalizer hashes the state binary, state summary, and every file in the graphics directory. The Python CI now also runs this production finalizer against the synthetic bundle emitted by the C++ adapter smoke executable, testing the C++-to-Python handoff. It refuses missing required graphics, path traversal and symlink artifacts. It updates only the metadata checksum map; the raw dump files remain unchanged.
 
 ## Known limitations / next gates
 - The guarded script patches a clean local checkout; the GitHub CI build applies this patch to an ephemeral upstream checkout. No patch is merged into the upstream repository.
-- The prior automatic-trigger revision was compiled against upstream headers in CI. The current manual-F8 revision is awaiting its full upstream desktop build CI run.
+- The prior automatic-trigger revision was compiled against upstream headers in CI. The manual-F8 revision passed the full upstream desktop build and no-ROM startup/CLI smoke test in GitHub Actions run #10.
 - The upstream state dump function currently ignores individual `fwrite()` return values; the ingestion validator must continue checking file structure and expected sizes.
 - The adapter checks expected state/summary files and graphics directory creation, but full PNG integrity and binary snapshot integrity are still enforced by downstream validators.
 - `state_dump_set_output_dir()` and its count are process-global; serialize capture requests and do not run multiple bundles concurrently.
