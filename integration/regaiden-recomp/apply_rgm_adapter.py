@@ -36,13 +36,15 @@ def main() -> int:
     if head != UPSTREAM_COMMIT and not args.force_commit:
         raise RuntimeError(f"expected upstream {UPSTREAM_COMMIT}, found {head}; review source before --force-commit")
     main_path, cmake_path = upstream / MAIN, upstream / CMAKE
+    android_cmake_path = upstream / "android/app/jni/CMakeLists.txt"
     platform_header_path = upstream / "src/recompiled/runtime/include/platform_sdl.h"
     platform_cpp_path = upstream / "src/recompiled/runtime/src/platform_sdl.cpp"
     main_text, cmake_text = main_path.read_text(), cmake_path.read_text()
+    android_cmake_text = android_cmake_path.read_text()
     platform_header_text = platform_header_path.read_text()
     platform_cpp_text = platform_cpp_path.read_text()
     if any(MARKER in value for value in
-           (main_text, cmake_text, platform_header_text, platform_cpp_text)):
+           (main_text, cmake_text, android_cmake_text, platform_header_text, platform_cpp_text)):
         raise RuntimeError("RGM adapter integration marker already exists; refusing duplicate patch")
     adapter_dir = upstream / "src/recompiled"
     if ((adapter_dir / "rgm_capture_bundle.h").exists() or
@@ -55,6 +57,12 @@ def main() -> int:
         "    ${CMAKE_CURRENT_SOURCE_DIR}/asset_dump.c\n"
         "    ${CMAKE_CURRENT_SOURCE_DIR}/rgm_capture_bundle.cpp # " + MARKER + "\n",
         "CMake source list")
+    android_cmake_text = replace_once(
+        android_cmake_text,
+        "    ${RECOMPILED_DIR}/asset_dump.c\n",
+        "    ${RECOMPILED_DIR}/asset_dump.c\n"
+        "    ${RECOMPILED_DIR}/rgm_capture_bundle.cpp # " + MARKER + "\n",
+        "Android CMake source list")
 
     main_text = replace_once(
         main_text,
@@ -146,14 +154,16 @@ def main() -> int:
         "SDL event state")
     platform_cpp_text = replace_once(
         platform_cpp_text,
-        "                case SDL_SCANCODE_F4:\n",
-        "                case SDL_SCANCODE_F8:\n"
-        "                    if (pressed && event->key.repeat == 0) {\n"
-        "                        g_rgm_capture_requested = true;\n"
-        "                    }\n"
-        "                    return true;\n\n"
-        "                case SDL_SCANCODE_F4:\n",
-        "SDL F8 capture shortcut")
+        "                if (ImGui::Button(\"Capture State Snapshot\", ImVec2(280.0f * ui_scale, 36.0f * ui_scale))) {\n"
+        "                    capture_guest_snapshot(NULL);\n"
+        "                }\n",
+        "                if (ImGui::Button(\"Capture State Snapshot\", ImVec2(280.0f * ui_scale, 36.0f * ui_scale))) {\n"
+        "                    capture_guest_snapshot(NULL);\n"
+        "                }\n"
+        "                if (ImGui::Button(\"Request RGM Bundle Capture\", ImVec2(280.0f * ui_scale, 36.0f * ui_scale))) {\n"
+        "                    g_rgm_capture_requested = true;\n"
+        "                }\n",
+        "touch-accessible RGM capture button")
     if "bool gb_platform_consume_rgm_capture_request(void)" in platform_cpp_text:
         raise RuntimeError("SDL capture request consumer already exists")
     platform_cpp_text += (
@@ -171,12 +181,13 @@ def main() -> int:
     shutil.copy2(here / "integration/regaiden-recomp/rgm_capture_bundle.cpp",
                  adapter_dir / "rgm_capture_bundle.cpp")
     cmake_path.write_text(cmake_text)
+    android_cmake_path.write_text(android_cmake_text)
     main_path.write_text(main_text)
     platform_header_path.write_text(platform_header_text)
     platform_cpp_path.write_text(platform_cpp_text)
     print("Applied RGM capture adapter integration.")
     print(f"Upstream commit: {head}")
-    print("Run with --rgm-capture-* metadata options, then press F8 at the desired scene.")
+    print("Desktop: use --rgm-capture-* metadata options. Desktop and Android: request capture from the Diagnostics menu.")
     return 0
 
 if __name__ == "__main__":
