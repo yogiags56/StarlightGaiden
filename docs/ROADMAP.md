@@ -9,8 +9,8 @@ Status reflects work actually completed in this repository, not estimates.
 | RGM-001D | Character state and scene mapping | Audit complete; active character/speaker still unverified |
 | RGM-001E.1 | Fingerprint specification | Specification complete |
 | RGM-001E.2 | Snapshot dataset and capture protocol | Protocol drafted; no actual game dataset collected |
-| RGM-001E.3 | Snapshot Analyzer | Prototype integrated; synthetic tests to be run in this repository |
-| RGM-001E.4 | Graphics and tilemap comparator | Next |
+| RGM-001E.3 | Snapshot Analyzer | Integrated; synthetic tests pass |
+| RGM-001E.4 | Graphics and tilemap comparator | Implemented; synthetic tests pass; awaiting real game captures |
 | RGM-002 | Upstream build and compatibility | Not started |
 | RGM-003 | Gameplay verification | Not started |
 | RGM-004 | Asset pipeline | Not started |
@@ -22,8 +22,8 @@ Status reflects work actually completed in this repository, not estimates.
 
 ## Immediate sequence
 
-1. Validate the snapshot parser using synthetic fixtures and malformed inputs.
-2. Integrate graphics pixel/tilemap comparison without treating palette animation as room identity.
-3. Capture paired memory and graphics snapshots from the same game state.
+1. Capture paired memory and graphics snapshots from the same game state.
+2. Run the memory and graphics comparators against actual captures.
+3. Establish repeated-capture baselines for static rooms, camera movement, animation and palette changes.
 4. Derive room/scene/character signals only from repeatable comparisons.
 5. Audit and replace unverified runtime heuristics only after evidence and tests exist.
