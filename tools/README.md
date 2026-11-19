@@ -69,3 +69,12 @@ See [Dataset Audit & Ground-Truth Evaluation](../docs/analysis/RGM-001E.11-DATAS
 python tools/rgm_dataset_audit.py dataset/ --seed 20261119 --output dataset_audit.json --split-manifest dataset_split_manifest.json
 ```
 The audit validates captures, groups same-session and exact-duplicate evidence, quarantines unknown labels and assigns whole groups to train/calibration/evaluation. Observed labels remain unverified annotations; the readiness flag is structural only.
+
+## RGM-001E.12 Verified Ground-Truth Evaluation
+
+See [Verified Ground-Truth Evaluation](../docs/analysis/RGM-001E.12-GROUND-TRUTH-EVALUATION.md).
+
+```bash
+python tools/rgm_ground_truth_evaluator.py dataset_split_manifest.json verified_room_annotations.json scene_correlation.json --output ground_truth_evaluation.json
+```
+Only annotations with `verified=true`, reviewer and evidence are accepted. The threshold is calibrated on calibration pairs and applied to holdout evaluation pairs; cross-split pairs and unverified annotations are excluded.
