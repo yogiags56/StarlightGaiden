@@ -122,13 +122,41 @@ def main() -> int:
         '    }\n'
         '    if (!rom_loader_acquire_rom(explicit_rom_path)) {\n',
         "RGM CLI validation")
+#ifdef __ANDROID__
+    if (!rgm_capture_dir) {
+        rgm_session = "SESSION-ANDROID-0001";
+        rgm_experiment = "ANDROID-TOUCH-001";
+        rgm_checkpoint = "UNLABELED";
+        rgm_location = "unlabeled";
+        rgm_activity = "unclassified";
+        rgm_character = "unknown";
+        rgm_speaker = "unknown";
+    }
+#endif
     main_text = replace_once(
         main_text,
         '            gbrt_port_render(ctx, 1280, 720);\n#endif\n            const uint32_t* fb = gb_get_framebuffer(ctx);\n',
         '            gbrt_port_render(ctx, 1280, 720);\n#endif\n'
-        '            if (rgm_capture_dir && gb_platform_consume_rgm_capture_request()) {\n'
-        '                rgm_capture_pending = true;\n'
-        '                fprintf(stderr, "[RGM] F8 capture requested at completed frame %llu\\n", frame_index);\n'
+        '            if (gb_platform_consume_rgm_capture_request()) {\n'
+        '#ifdef __ANDROID__\n'
+        '                static unsigned rgm_android_capture_serial = 0;\n'
+        '                static char rgm_android_capture_dir[1024] = {};\n'
+        '                static char rgm_android_capture_id[64] = {};\n'
+        '                const char* rgm_external = SDL_AndroidGetExternalStoragePath();\n'
+        '                if (!rgm_capture_dir && rgm_external && rgm_external[0]) {\n'
+        '                    ++rgm_android_capture_serial;\n'
+        '                    snprintf(rgm_android_capture_id, sizeof(rgm_android_capture_id), "ANDROID-%06u", rgm_android_capture_serial);\n'
+        '                    snprintf(rgm_android_capture_dir, sizeof(rgm_android_capture_dir), "%s/snapshots/rgm/%s/FP-%s", rgm_external, rgm_session, rgm_android_capture_id);\n'
+        '                    rgm_capture_id = rgm_android_capture_id;\n'
+        '                    rgm_capture_dir = rgm_android_capture_dir;\n'
+        '                }\n'
+        '#endif\n'
+        '                if (rgm_capture_dir && rgm_session && rgm_experiment && rgm_checkpoint && rgm_location && rgm_activity) {\n'
+        '                    rgm_capture_pending = true;\n'
+        '                    fprintf(stderr, "[RGM] Capture requested at completed frame %llu\\n", frame_index);\n'
+        '                } else {\n'
+        '                    fprintf(stderr, "[RGM] Capture request ignored: capture path/metadata unavailable\\n");\n'
+        '                }\n'
         '            }\n'
         '            if (rgm_capture_pending) {\n'
         '                char rgm_status[512] = {};\n'
