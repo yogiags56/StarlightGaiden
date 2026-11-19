@@ -180,10 +180,10 @@ def main() -> int:
         "SDL platform header API")
     platform_cpp_text = replace_once(
         platform_cpp_text,
-        "static bool handle_runtime_event(const SDL_Event* event, GBContext* ctx) {",
-        "static bool g_rgm_capture_requested = false; // " + MARKER + "\n\n"
-        "static bool handle_runtime_event(const SDL_Event* event, GBContext* ctx) {",
-        "SDL event state")
+        "static GBContext* g_registered_ctx = NULL;\n",
+        "static GBContext* g_registered_ctx = NULL;\n"
+        "static bool g_rgm_capture_requested = false; // " + MARKER + "\n",
+        "SDL global capture request state")
     platform_cpp_text = replace_once(
         platform_cpp_text,
         "                if (ImGui::Button(\"Capture State Snapshot\", ImVec2(280.0f * ui_scale, 36.0f * ui_scale))) {\n"
