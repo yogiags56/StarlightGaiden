@@ -44,8 +44,6 @@ See:
 - [Strict Ingestion Reviewer](tools/rgm_ingestion_review.py)
 - [Temporal Consistency Auditor](tools/rgm_temporal_consistency.py)
 - [Temporal Consistency Protocol](docs/analysis/RGM-001E.15-TEMPORAL-CONSISTENCY.md)
-- [Temporal Consistency Auditor](tools/rgm_temporal_consistency.py)
-- [Temporal Consistency Protocol](docs/analysis/RGM-001E.15-TEMPORAL-CONSISTENCY.md)
 
 ## Legal and asset policy
 
