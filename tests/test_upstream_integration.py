@@ -42,15 +42,15 @@ class UpstreamIntegrationTests(unittest.TestCase):
         platform_include.mkdir(parents=True)
         platform_source.mkdir(parents=True)
         (platform_include / "platform_sdl.h").write_text(
-            "bool gb_platform_poll_events(GBContext* ctx);\\n")
+            "bool gb_platform_poll_events(GBContext* ctx);\n")
         (platform_source / "platform_sdl.cpp").write_text(
-            "static bool handle_runtime_event(const SDL_Event* event, GBContext* ctx) {\\n"
-            "    switch (event->type) {\\n"
-            "        case SDL_KEYDOWN:\\n"
-            "        case SDL_KEYUP: {\\n"
-            "                case SDL_SCANCODE_F4:\\n"
-            "                    capture_guest_snapshot(NULL);\\n"
-            "                    return true;\\n")
+            "static bool handle_runtime_event(const SDL_Event* event, GBContext* ctx) {\n"
+            "    switch (event->type) {\n"
+            "        case SDL_KEYDOWN:\n"
+            "        case SDL_KEYUP: {\n"
+            "                case SDL_SCANCODE_F4:\n"
+            "                    capture_guest_snapshot(NULL);\n"
+            "                    return true;\n")
         subprocess.run(["git", "init", "-q", str(root)], check=True)
         subprocess.run(["git", "-C", str(root), "config", "user.email", "test@example.invalid"], check=True)
         subprocess.run(["git", "-C", str(root), "config", "user.name", "Test"], check=True)
