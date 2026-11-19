@@ -19,7 +19,7 @@ def _nonnegative_int(obj:dict,key:str):
 
 def _timing(meta:dict,max_gap_ms:float):
     t=meta.get("capture_timing")
-    if not isinstance(t,dict):return {"status":"insufficient_evidence","errors":[],"warnings":["capture_timing block absent"]}
+    if not isinstance(t,dict):return {"status":"insufficient_evidence","errors":[],"warnings":["capture_timing block absent"],"frame_markers_match":None,"midpoint_gap_ms":None,"clock_id":None,"state_frame":None,"graphics_frame":None}
     errors=[];warnings=[]
     clock=t.get("clock_id")
     source=t.get("clock_source")
