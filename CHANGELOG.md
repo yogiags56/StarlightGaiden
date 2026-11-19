@@ -6,8 +6,9 @@
 - Added a translation-invariant tile-pattern multiset digest (coarse descriptor).
 - Added circular tilemap offset search and inverse-frequency weighted similarity.
 - Added optional evidence-based excluded-cell masks and overlap gates.
+- Added a minimum pattern-diversity gate to reject ambiguous repetitive maps.
 - Added explicit candidate/weak/insufficient states; no automatic room identity assignment.
-- Added synthetic tests for exact match, camera/ring-buffer offset recovery and low-overlap rejection.
+- Added synthetic tests for exact match, camera/ring-buffer offset recovery and low-overlap/low-diversity rejection.
 
 ## RGM-001E.4 Graphics Comparator
 
@@ -22,4 +23,4 @@
 - Initialized the StarlightGaiden project repository.
 - Added project direction, roadmap, architecture/provenance and snapshot protocol.
 - Integrated the offline snapshot analyzer prototype.
-- Added synthetic unit tests; real game captures and Android runtime validation remain pending.
+- Added synthetic unit tests; real game data and Android runtime validation remain pending.
