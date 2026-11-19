@@ -1,7 +1,7 @@
 # RGM-001E.16 — Runtime Capture Bundle Adapter
 
 ## Status
-Adapter source and host-side checksum finalizer are staged in this repository. They are not yet integrated into or compiled with the upstream recompilation project. No real game capture is claimed.
+Adapter source and host-side checksum finalizer are maintained in this repository. The guarded integration script has passed a full upstream desktop build and no-ROM startup/CLI smoke test before the manual-trigger revision. The manual F8 trigger revision has passed Python and C++ adapter CI; its full upstream desktop build is currently being re-run. No real game capture is claimed.
 
 ## Source files
 - `integration/regaiden-recomp/rgm_capture_bundle.h`
@@ -33,7 +33,7 @@ Against the audited upstream commit `e5befd20e67939d939319149d1c1177b8e6c5cd6`:
 2. Add `rgm_capture_bundle.cpp` to the native executable/library target in its CMake source list. Keep `state_dump.c` and `asset_dump.c` linked as they already are.
 3. Ensure the target uses C++17 or newer (`std::filesystem`); the audited build is configured for C++20.
 4. Include `rgm_capture_bundle.h` in the game-loop translation unit.
-5. Add an explicit, opt-in capture trigger after the completed-frame/port-render block and before framebuffer presentation. Populate the IDs from the planned session JSON; never infer character/speaker labels from HP bytes.
+5. Add the explicit opt-in F8 capture request in the SDL event path. The main loop consumes it after a completed guest frame and before framebuffer presentation. Populate IDs from the planned session JSON; never infer character/speaker labels from HP bytes.
 6. Build desktop first, then Android ARM64. Keep the feature disabled by default and preserve normal gameplay when disabled.
 
 Illustrative call:
@@ -69,8 +69,8 @@ python tools/rgm_temporal_consistency.py dataset/SESSION-0001 --output dataset/S
 The finalizer hashes the state binary, state summary, and every file in the graphics directory. It refuses missing required graphics, path traversal and symlink artifacts. It updates only the metadata checksum map; the raw dump files remain unchanged.
 
 ## Known limitations / next gates
-- The adapter is a proposal staged in StarlightGaiden, not an upstream patch.
-- It has not been compiled against upstream headers or tested in the emulator.
+- The guarded script patches a clean local checkout; the GitHub CI build applies this patch to an ephemeral upstream checkout. No patch is merged into the upstream repository.
+- The prior automatic-trigger revision was compiled against upstream headers in CI. The current manual-F8 revision is awaiting its full upstream desktop build CI run.
 - The upstream state dump function currently ignores individual `fwrite()` return values; the ingestion validator must continue checking file structure and expected sizes.
 - The adapter checks expected state/summary files and graphics directory creation, but full PNG integrity and binary snapshot integrity are still enforced by downstream validators.
 - `state_dump_set_output_dir()` and its count are process-global; serialize capture requests and do not run multiple bundles concurrently.
@@ -87,7 +87,7 @@ cmake -S ../regaiden-recomp/src/recompiled -B ../regaiden-recomp/build -DCMAKE_B
 cmake --build ../regaiden-recomp/build --config Release --parallel
 ```
 
-The script refuses a different upstream HEAD unless `--force-commit` is explicitly supplied after manual review. It copies the adapter into `src/recompiled/`, adds the C++ file to the `gbrt` library, adds an opt-in one-shot CLI trigger, and invokes capture after a guest frame completes and after optional port rendering, before framebuffer presentation. The trigger remains inactive during ordinary gameplay.
+The script refuses a different upstream HEAD unless `--force-commit` is explicitly supplied after manual review. It copies the adapter into `src/recompiled/`, adds the C++ file to the `gbrt` library, adds an opt-in F8 keyboard request to the SDL runtime, and invokes capture after a guest frame completes and after optional port rendering, before framebuffer presentation. CLI metadata alone does not trigger a capture; F8 is required. The trigger remains inactive during ordinary gameplay.
 
 Example one-shot capture (replace labels with operator-observed values):
 
