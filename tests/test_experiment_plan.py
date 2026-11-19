@@ -10,7 +10,7 @@ class ExperimentPlanTests(unittest.TestCase):
    root=Path(td);m=root/"matrix.json";m.write_text(json.dumps(self.matrix()))
    result=generate(m,root/"SESSION-TEST","SESSION-TEST")
    self.assertEqual(result["planned_capture_checkpoints"],6);self.assertFalse(result["game_data_created"])
-   f=root/"SESSION-TEST"/"EXP-01-CP-01-R01"/"capture_metadata.json";d=json.loads(f.read_text())
+   f=root/"SESSION-TEST"/"FP-EXP-01-CP-01-R01"/"capture_metadata.json";d=json.loads(f.read_text())
    self.assertEqual(d["verification"]["room_identity"],"unverified")
    self.assertTrue((f.parent/"graphics").is_dir())
    self.assertFalse((f.parent/"state.bin").exists())
