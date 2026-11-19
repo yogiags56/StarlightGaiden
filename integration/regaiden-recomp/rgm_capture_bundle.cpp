@@ -205,8 +205,14 @@ extern "C" bool rgm_capture_bundle(
     if (!fs::is_directory(graphics_path)) {
         return fail("RGM capture incomplete: graphics directory missing");
     }
-    const std::string graphics_relative = fs::relative(graphics_path, root, ec).generic_string();
-    if (ec || graphics_relative.empty() || graphics_relative.rfind("..", 0) == 0) {
+    const fs::path absolute_root = fs::absolute(root, ec).lexically_normal();
+    if (ec) return fail("RGM capture failed: cannot resolve capture root");
+    const fs::path absolute_graphics = fs::absolute(graphics_path, ec).lexically_normal();
+    if (ec) return fail("RGM capture failed: cannot resolve graphics directory");
+    const std::string graphics_relative =
+        absolute_graphics.lexically_relative(absolute_root).generic_string();
+    if (graphics_relative.empty() || graphics_relative == "." ||
+        graphics_relative == ".." || graphics_relative.rfind("../", 0) == 0) {
         return fail("RGM capture failed: graphics directory is outside capture root");
     }
 
