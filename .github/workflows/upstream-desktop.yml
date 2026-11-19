@@ -51,3 +51,24 @@ jobs:
 
       - name: Smoke-test desktop startup and RGM CLI without a ROM
         run: python tests/desktop_startup_smoke.py regaiden-recomp/build/Resident_Evil_Gaiden__USA_
+      - name: Package desktop executable and build provenance
+        run: |
+          mkdir -p dist
+          cp regaiden-recomp/build/Resident_Evil_Gaiden__USA_ dist/
+          {
+            echo "project=Resident Evil Gaiden Remastered"
+            echo "upstream_repository=https://github.com/sergiomanzur/regaiden-recomp"
+            echo "upstream_commit=e5befd20e67939d939319149d1c1177b8e6c5cd6"
+            echo "integration=StarlightGaiden manual F8 capture adapter"
+            echo "platform=Linux x86_64 (Ubuntu 24.04)"
+            echo "binary_sha256=$(sha256sum dist/Resident_Evil_Gaiden__USA_ | cut -d' ' -f1)"
+            echo "dynamic_dependencies:"
+            ldd dist/Resident_Evil_Gaiden__USA_ || true
+          } > dist/BUILD_INFO.txt
+      - name: Upload desktop executable artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: regaiden-desktop-linux-x86_64-rgm-f8
+          path: dist/
+          if-no-files-found: error
+          retention-days: 14
