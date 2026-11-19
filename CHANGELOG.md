@@ -41,3 +41,11 @@
 - Reads the music-track hint from WRAM offset 0x0E8C, matching the inspected upstream helper.
 - Emits candidate/weak/insufficient evidence only; no room, scene, active-character or speaker identity is assigned.
 - Added synthetic tests for summary parsing and pairwise correlation; real-game calibration remains pending.
+
+## Unreleased — RGM-001E.8 Scene State Classification Foundation
+
+- Added a conservative per-capture evidence classifier for the eight target scene categories.
+- Reports the WRAM bank-2 UI family without pretending to distinguish inventory, PDA, title and save menus.
+- Reports a dialogue candidate only from the upstream LCDC/WX/WY geometry heuristic and non-UI bank context.
+- Leaves exploration, cutscene, normal/boss combat, room transition, save/load, active character and speaker unresolved pending real captures.
+- Added synthetic tests for UI-family handling, dialogue geometry and unknown fallback.
