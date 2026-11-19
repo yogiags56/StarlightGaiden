@@ -16,7 +16,7 @@ The current technical candidate is [sergiomanzur/regaiden-recomp](https://github
 
 ## Development status
 
-Current work: **RGM-001E.16 — Runtime Capture Bundle Adapter (staged; upstream integration pending)**
+Current work: **RGM-001E.18 — Desktop Adapter Smoke Verification (CI passed; full upstream build pending)**
 
 The offline Snapshot Analyzer compares WRAM, HRAM, IO and OAM snapshot blocks. The conservative Scene State Classifier reports UI-family and dialogue-geometry candidates, while leaving unvalidated scene types and character/speaker identity unresolved. The Graphics Comparator compares upstream RGBA framebuffer, tile sheets and 32×32 tilemap cells. The experimental Room Fingerprint Engine hashes rendered tile patterns and tests circular tilemap offsets to report candidate similarity. Synthetic tests are not game-runtime validation; no real game snapshot dataset or Android build is claimed.
 
@@ -47,6 +47,7 @@ See:
 - [Runtime Capture Bundle Adapter](docs/analysis/RGM-001E.16-RUNTIME-CAPTURE-ADAPTER.md)
 - [Runtime Capture Bundle Source](integration/regaiden-recomp/rgm_capture_bundle.cpp)
 - [Guarded Upstream Integration Script](integration/regaiden-recomp/apply_rgm_adapter.py)
+- [C++ Adapter Smoke Test](tests/cpp_adapter_smoke.cpp)
 - [Capture SHA-256 Finalizer](tools/rgm_capture_finalize.py)
 
 ## Legal and asset policy
