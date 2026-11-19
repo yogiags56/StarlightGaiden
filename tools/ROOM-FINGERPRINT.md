@@ -36,6 +36,7 @@ Pass masks independently with `--exclude-a` and `--exclude-b`. Exclusions must b
 - Pairwise matching tests circular shifts in the configured range.
 - Similarity is inverse-frequency weighted so common repeated tiles contribute less than rarer patterns.
 - Overlap count is reported independently; a high score on a tiny overlap is not accepted.
+- A minimum of four distinct tile patterns is required in the best overlap. Uniform/repetitive maps are rejected as ambiguous even when pixel-identical.
 
 ## Output states
 
@@ -43,7 +44,7 @@ Pass masks independently with `--exclude-a` and `--exclude-b`. Exclusions must b
 - `weak_candidate`: overlap gate passed but similarity is moderate.
 - `insufficient_evidence`: overlap too small or similarity too weak.
 
-Default gates (0.82 similarity, 96 overlapping cells) are initial engineering values, not measured accuracy. They must be calibrated against real captures and negative controls before use in gameplay.
+Default gates (0.82 similarity, 96 overlapping cells, four distinct patterns) are initial engineering values, not measured accuracy. They must be calibrated against real captures and negative controls before use in gameplay.
 
 ## Important limitations
 
