@@ -49,6 +49,8 @@ jobs:
           test -s /tmp/sg-icon-pack/res/mipmap-anydpi-v26/ic_launcher.xml
           test -s /tmp/sg-icon-pack/res/mipmap-anydpi-v26/ic_launcher_round.xml
           cp -a /tmp/sg-icon-pack/res/. regaiden-recomp/android/app/src/main/res/
+          python3 -m pip install --user Pillow
+          python3 integration/regaiden-recomp/fix_adaptive_icon_safe_zone.py regaiden-recomp/android/app/src/main/res
       - name: Build Android ARM64 APK
         working-directory: regaiden-recomp/android
         env:
