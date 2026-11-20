@@ -7,6 +7,7 @@ on:
     paths:
       - '.github/workflows/android-arm64.yml'
       - 'integration/regaiden-recomp/**'
+      - 'StarlightGaiden-Android-Launcher-Icon-Integration.zip'
       - 'tests/test_upstream_integration.py'
   workflow_dispatch:
 
@@ -40,6 +41,14 @@ jobs:
         run: python3 integration/regaiden-recomp/apply_rgm_adapter.py regaiden-recomp
       - name: Add Android RGM public Downloads export
         run: python3 integration/regaiden-recomp/apply_android_rgm_export.py regaiden-recomp
+      - name: Apply Resident Evil Gaiden launcher icon pack
+        run: |
+          test -s StarlightGaiden-Android-Launcher-Icon-Integration.zip
+          mkdir -p /tmp/sg-icon-pack
+          unzip -q StarlightGaiden-Android-Launcher-Icon-Integration.zip -d /tmp/sg-icon-pack
+          test -s /tmp/sg-icon-pack/res/mipmap-anydpi-v26/ic_launcher.xml
+          test -s /tmp/sg-icon-pack/res/mipmap-anydpi-v26/ic_launcher_round.xml
+          cp -a /tmp/sg-icon-pack/res/. regaiden-recomp/android/app/src/main/res/
       - name: Build Android ARM64 APK
         working-directory: regaiden-recomp/android
         env:
