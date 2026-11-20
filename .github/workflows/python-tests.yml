@@ -1,0 +1,26 @@
+name: Python analysis tools
+
+on:
+  push:
+    branches: ["main", "work/**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Compile analysis tools
+        run: python -m py_compile tools/rgm_snapshot_analyzer.py tools/rgm_graphics_comparator.py tools/rgm_room_fingerprint.py tools/rgm_capture_validator.py tools/rgm_scene_correlator.py tools/rgm_scene_classifier.py tools/rgm_experiment_plan.py tools/rgm_dataset_audit.py tools/rgm_ground_truth_evaluator.py tools/rgm_collection_status.py tools/rgm_ingestion_review.py tools/rgm_temporal_consistency.py tools/rgm_capture_finalize.py integration/regaiden-recomp/apply_rgm_adapter.py
+      - name: Run synthetic tests
+        run: python -m unittest discover -s tests -v
+      - name: Compile and run C++ capture adapter smoke test
+        run: g++ -std=c++20 -Wall -Wextra -Werror -I tests/cpp_stubs -I integration/regaiden-recomp integration/regaiden-recomp/rgm_capture_bundle.cpp tests/cpp_adapter_smoke.cpp -o /tmp/rgm-capture-adapter-smoke && /tmp/rgm-capture-adapter-smoke
+      - name: Finalize C++ adapter fixture with production checksum tool
+        run: python tools/rgm_capture_finalize.py /tmp/rgm-cpp-adapter-smoke/SESSION-TEST/FP-CAP-001
